@@ -143,4 +143,25 @@ class VKService {
     }
   }
   
+  //Получение новостей
+  func getNews <T: NewsfeedParameters> (completionHandler: @escaping ([T]?, Error?) -> Void) {
+    //путь для метода
+    let path = T.path
+    //параметры
+    let parameters = T.getParameters()
+    //составление URL
+    let url = baseURL + path
+    //запрос
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON {response in
+      switch response.result {
+      case .failure(let error):
+        completionHandler(nil, error)
+      case .success(let value):
+        let json = JSON(value)
+        let data = json["response"]["items"].arrayValue.map { T.parseJSON(json: $0)}
+        NewsfeedPost.nextFrom = json["response"]["next_from"].stringValue
+        completionHandler(data, nil)
+      }
+    }
+  }
 }

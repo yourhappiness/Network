@@ -17,13 +17,13 @@ let mountainsImage = UIImage(named: "Mountains")
 let tigerImage = UIImage(named: "Tiger")
 
 var news = [
-  NewsfeedItem(sourceName: "City", sourcePhoto: cityImage!, postTime: Date.init(timeIntervalSinceNow: 0), postText: "Big city lights\nBig city life\nMe try fi get by\nPreasure nah ease up no matta how hard me try\nBig city life\nHear my heart have no base\nAnd right now babylon de pon me case\nBig city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case People in show, all lined in a row We just push on by, its funny How hard we try Take a moment to relax Before you do anything rash Don't you wanna know me Be a friend of mine I'll share some wisdom with you Dont you ever get lonely From time to time Dont let the system get you down Big city life Me try fi get by Preasure nah ease up no matta how hard me try Big city life Hear my heart have no base And right now babylon de pon me case Big city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case Soon our work is done All of us one by one Still we live our lives As if all this stuff survives Don't you wanna know me Be a friend of mine I'll share some wisdom with you Dont you ever get lonely From time to time Dont let the system get you down The linguist accross the seas and the oceans A Permanent itinerant is what ive chosen I find myself in big city prison Arisen from the vision on mankind, designed To keep me, discreetly, neatly in the corner Youll find me with the flora and the fauna And the hardship, Back a yard is where my heart is, still I find it hard to depart this Big city life Big city life Me try fi get by Preasure nah ease up no matta how hard me try Big city life Hear my heart have no base And right now babylon de pon me case Big city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case Big city life Me try fi get by Preasure nah ease up no matta how hard me try Big city life Hear my heart have no base And right now babylon de pon me case Big city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case", numberOfViews: 467, numberOfLikes: 34, commentsNumber: 15, sharesNumber: 56, isLiked: true),
-  NewsfeedItem(sourceName: "Ferrari", sourcePhoto: carImage!, postTime: Date.init(timeIntervalSinceNow: 0), postText: "Cool Ferrari to your feed", numberOfViews: 45, numberOfLikes: 8, commentsNumber: 67, sharesNumber: 104, isLiked: false)
-//  NewsfeedItem(header: "Let's go rest!", image: lakeImage!, numberOfViews: 90, numberOfLikes: 21, isLiked: false),
-//  NewsfeedItem(header: "Big Ben", image: londonImage!, numberOfViews: 1079, numberOfLikes: 995, isLiked: false),
-//  NewsfeedItem(header: "The happiness in paradise", image: islandImage!, numberOfViews: 523, numberOfLikes: 350, isLiked: false),
-//  NewsfeedItem(header: "Breathtaking routes for your winter journey", image: mountainsImage!, numberOfViews: 89, numberOfLikes: 70, isLiked: true),
-//  NewsfeedItem(header: "WWF", image: tigerImage!, numberOfViews: 3, numberOfLikes: 1, isLiked: true)
+  NewsfeedPost(sourceName: "City", sourcePhoto: cityImage!, postTime: 1495094591, postText: "Big city lights\nBig city life\nMe try fi get by\nPreasure nah ease up no matta how hard me try\nBig city life\nHear my heart have no base\nAnd right now babylon de pon me case\nBig city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case People in show, all lined in a row We just push on by, its funny How hard we try Take a moment to relax Before you do anything rash Don't you wanna know me Be a friend of mine I'll share some wisdom with you Dont you ever get lonely From time to time Dont let the system get you down Big city life Me try fi get by Preasure nah ease up no matta how hard me try Big city life Hear my heart have no base And right now babylon de pon me case Big city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case Soon our work is done All of us one by one Still we live our lives As if all this stuff survives Don't you wanna know me Be a friend of mine I'll share some wisdom with you Dont you ever get lonely From time to time Dont let the system get you down The linguist accross the seas and the oceans A Permanent itinerant is what ive chosen I find myself in big city prison Arisen from the vision on mankind, designed To keep me, discreetly, neatly in the corner Youll find me with the flora and the fauna And the hardship, Back a yard is where my heart is, still I find it hard to depart this Big city life Big city life Me try fi get by Preasure nah ease up no matta how hard me try Big city life Hear my heart have no base And right now babylon de pon me case Big city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case Big city life Me try fi get by Preasure nah ease up no matta how hard me try Big city life Hear my heart have no base And right now babylon de pon me case Big city life, try fi get by preasure nah ease up no matta how hard me try Big city life My heart have no base And right now babylon de pon me case", numberOfViews: 467, numberOfLikes: 34, commentsNumber: 15, sharesNumber: 56, isLiked: true),
+  NewsfeedPost(sourceName: "Ferrari", sourcePhoto: carImage!, postTime: 1495094591, postText: "Cool Ferrari to your feed", numberOfViews: 45, numberOfLikes: 8, commentsNumber: 67, sharesNumber: 104, isLiked: false)
+//  NewsfeedPost(header: "Let's go rest!", image: lakeImage!, numberOfViews: 90, numberOfLikes: 21, isLiked: false),
+//  NewsfeedPost(header: "Big Ben", image: londonImage!, numberOfViews: 1079, numberOfLikes: 995, isLiked: false),
+//  NewsfeedPost(header: "The happiness in paradise", image: islandImage!, numberOfViews: 523, numberOfLikes: 350, isLiked: false),
+//  NewsfeedPost(header: "Breathtaking routes for your winter journey", image: mountainsImage!, numberOfViews: 89, numberOfLikes: 70, isLiked: true),
+//  NewsfeedPost(header: "WWF", image: tigerImage!, numberOfViews: 3, numberOfLikes: 1, isLiked: true)
 ]
 
 class NewsfeedViewController: UITableViewController {
@@ -31,10 +31,23 @@ class NewsfeedViewController: UITableViewController {
     var tapGestureRecognizer = UITapGestureRecognizer()
     var longPressRecognizer = UILongPressGestureRecognizer()
   
+    private let vkService = VKService()
+  
     override func viewDidLoad() {
         super.viewDidLoad()
 //        tableView.estimatedRowHeight = 470
         tableView.rowHeight = UITableView.automaticDimension
+      
+      vkService.getNews() { [weak self] (news: [NewsfeedPost]?, error: Error?) in
+        if let error = error {
+          self?.showAlert(error: error)
+          return
+        }
+        
+        guard let news = news, let self = self else {return}
+        print(news)
+      }
+      
     }
 
     // MARK: - Table view data source
@@ -53,7 +66,7 @@ class NewsfeedViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
         let pieceOfNews = news[indexPath.row]
-        cell.configure(sourceName: pieceOfNews.sourceName, sourcePhoto: pieceOfNews.sourcePhoto, postTime: pieceOfNews.postTime, postText: pieceOfNews.postText, numberOfLikes: pieceOfNews.numberOfLikes, commentsNumber: pieceOfNews.commentsNumber, sharesNumber: pieceOfNews.sharesNumber, numberOfViews: pieceOfNews.numberOfViews, isLiked: pieceOfNews.isLiked)
+      cell.configure(sourceName: pieceOfNews.sourceName!, sourcePhoto: pieceOfNews.sourcePhoto!, postTime: pieceOfNews.postDate, postText: pieceOfNews.postText, numberOfLikes: pieceOfNews.numberOfLikes, commentsNumber: pieceOfNews.commentsNumber, sharesNumber: pieceOfNews.sharesNumber, numberOfViews: pieceOfNews.numberOfViews, isLiked: pieceOfNews.isLiked)
 //        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(animatePhotoWithTap(_:)))
 //        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(animatePhotoWithPress(_:)))
 //        cell.newsPhoto.addGestureRecognizer(tapGestureRecognizer)

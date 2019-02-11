@@ -34,10 +34,10 @@ class NewsfeedPostCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-  func configure(sourceName: String, sourcePhoto: UIImage, postTime: Date, postText: String, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, numberOfViews: Int, isLiked: Bool) {
+  func configure(sourceName: String, sourcePhoto: UIImage, postTime: Int, postText: String, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, numberOfViews: Int, isLiked: Bool) {
     self.sourceName.text = sourceName
     self.sourcePhoto.image = sourcePhoto
-    self.postTime.text = postTime.description
+    self.postTime.text = String(postTime)
     self.postText.text = postText
     self.postText.translatesAutoresizingMaskIntoConstraints = true
     self.postText.sizeToFit()
