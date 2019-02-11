@@ -21,7 +21,7 @@ final class NewsfeedPost: NewsfeedParameters {
   var sourceName: String?
   var sourcePhoto: UIImage?
   var sourceId: Int?
-  var postDate: Int
+  var postDate: Double
   var postText: String
   var commentsNumber: Int
   var numberOfLikes: Int
@@ -52,7 +52,7 @@ final class NewsfeedPost: NewsfeedParameters {
   
   init (json: JSON) {
     self.sourceId = json["source_id"].intValue
-    self.postDate = json["date"].intValue
+    self.postDate = json["date"].doubleValue
     self.postText = json["text"].stringValue
     self.commentsNumber = json["comments"]["count"].intValue
     self.numberOfLikes = json["likes"]["count"].intValue
@@ -61,7 +61,7 @@ final class NewsfeedPost: NewsfeedParameters {
     self.numberOfViews = json["views"]["count"].intValue
   }
   
-  init(sourceName: String, sourcePhoto: UIImage, postTime: Int, postText: String, numberOfViews: Int, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, isLiked: Bool) {
+  init(sourceName: String, sourcePhoto: UIImage, postTime: Double, postText: String, numberOfViews: Int, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, isLiked: Bool) {
     self.sourceName = sourceName
     self.sourcePhoto = sourcePhoto
     self.postDate = postTime

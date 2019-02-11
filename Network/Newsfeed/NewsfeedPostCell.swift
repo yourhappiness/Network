@@ -34,10 +34,10 @@ class NewsfeedPostCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-  func configure(sourceName: String, sourcePhoto: UIImage, postTime: Int, postText: String, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, numberOfViews: Int, isLiked: Bool) {
+  func configure(sourceName: String, sourcePhoto: UIImage, postTime: Double, postText: String, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, numberOfViews: Int, isLiked: Bool) {
     self.sourceName.text = sourceName
     self.sourcePhoto.image = sourcePhoto
-    self.postTime.text = String(postTime)
+    self.postTime.text = getTimePassed(from: postTime)
     self.postText.text = postText
     self.postText.translatesAutoresizingMaskIntoConstraints = true
     self.postText.sizeToFit()
@@ -68,6 +68,24 @@ class NewsfeedPostCell: UITableViewCell {
     newsViews.text = nil
     newsLikes.isLiked = false
     newsLikes.likeButton.setNeedsDisplay()
+  }
+  
+  func getTimePassed(from time: Double) -> String {
+    let date = Date(timeIntervalSince1970: time)
+    let timeInterval = Date().timeIntervalSince(date)
+    let strDate: String
+    if timeInterval >= 2592000 {
+      strDate = "\(Int(round(timeInterval/2592000))) months ago"
+    } else if timeInterval >= 86400 {
+      strDate = "\(Int(round(timeInterval/86400))) days ago"
+    } else if timeInterval >= 3600 {
+      strDate = "\(Int(round(timeInterval/3600))) hours ago"
+    } else if timeInterval >= 60 {
+      strDate = "\(Int(round(timeInterval/60))) minutes ago"
+    } else {
+      strDate = "\(Int(round(timeInterval))) seconds ago"
+    }
+    return strDate
   }
   
 }
