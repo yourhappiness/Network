@@ -571,7 +571,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="separatorColor" red="0.036538719380000001" green="0.080495879500000006" blue="0.60901068650000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" indentationWidth="10" reuseIdentifier="NewsfeedPostCell" rowHeight="235" id="G8a-y0-SuD" customClass="NewsfeedPostCell" customModule="Network" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="235"/>
@@ -680,11 +681,12 @@
                                                 <constraint firstAttribute="width" constant="50" id="ZHV-fx-pkd"/>
                                             </constraints>
                                         </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kX4-yx-zDq">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="justified" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kX4-yx-zDq">
                                             <rect key="frame" x="12" y="69" width="351" height="100"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <accessibility key="accessibilityConfiguration">
-                                                <accessibilityTraits key="traits" notEnabled="YES" adjustable="YES"/>
+                                                <accessibilityTraits key="traits" notEnabled="YES"/>
+                                                <bool key="isElement" value="NO"/>
                                             </accessibility>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="100" id="D3f-gR-F7b"/>

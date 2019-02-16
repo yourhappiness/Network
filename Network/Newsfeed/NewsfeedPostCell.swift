@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class NewsfeedPostCell: UITableViewCell {
   
@@ -23,9 +24,13 @@ class NewsfeedPostCell: UITableViewCell {
   @IBOutlet weak var sharesNumber: UILabel!
   @IBOutlet weak var newsViews: UILabel!
   
+  var sourceUser: Results<User>?
+  var sourceGroup: Results<Group>?
+  
   override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+      self.postText.translatesAutoresizingMaskIntoConstraints = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,26 +39,37 @@ class NewsfeedPostCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-  func configure(sourceName: String, sourcePhoto: UIImage, postTime: Double, postText: String, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, numberOfViews: Int, isLiked: Bool) {
-    self.sourceName.text = sourceName
-    self.sourcePhoto.image = sourcePhoto
-    self.postTime.text = getTimePassed(from: postTime)
-    self.postText.text = postText
-    self.postText.translatesAutoresizingMaskIntoConstraints = true
+  func configure(with pieceOfNews: NewsfeedPost) {
+    if pieceOfNews.sourceId > 0 {
+      self.sourceUser = try? Realm().objects(User.self).filter("id = %@", pieceOfNews.sourceId)
+      guard let sourceUser = self.sourceUser else {return}
+      let source = Array(sourceUser)[0]
+      self.sourceName.text = source.firstName + source.lastName
+      self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
+    } else if pieceOfNews.sourceId < 0 {
+      self.sourceGroup = try? Realm().objects(Group.self).filter("id = %@", -pieceOfNews.sourceId)
+      guard let sourceGroup = self.sourceGroup else {return}
+      let source = Array(sourceGroup)[0]
+      self.sourceName.text = source.name
+      self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
+    }
+    self.postTime.text = self.getTimePassed(from: pieceOfNews.postDate)
+    self.postText.text = pieceOfNews.postText
     self.postText.sizeToFit()
     if self.postText.frame.height > 100 {
-      self.postText.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.postText.frame.width, height: 100)
+      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 100)
       self.postText.isScrollEnabled = true
       self.postText.flashScrollIndicators()
+    } else {
+      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: self.postText.frame.height)
     }
     self.postText.backgroundColor = .clear
-    self.newsLikes.numberOfLikes = numberOfLikes
-    self.commentsNumber.text = String(commentsNumber)
-    self.sharesNumber.text = String(sharesNumber)
-    self.newsLikes.isLiked = isLiked
+    self.newsLikes.numberOfLikes = pieceOfNews.numberOfLikes
+    self.commentsNumber.text = String(pieceOfNews.commentsNumber)
+    self.sharesNumber.text = String(pieceOfNews.sharesNumber)
+    self.newsLikes.isLiked = pieceOfNews.isLiked
     self.newsLikes.setupView()
-    self.newsViews.text = String(numberOfViews)
+    self.newsViews.text = String(pieceOfNews.numberOfViews)
   }
   
   override func prepareForReuse() {
@@ -62,6 +78,8 @@ class NewsfeedPostCell: UITableViewCell {
     sourcePhoto.image = nil
     postTime.text = nil
     postText.text = nil
+    postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 1)
+    postText.isScrollEnabled = false
     newsLikes.numberOfLikes = 0
     commentsNumber.text = nil
     sharesNumber.text = nil
@@ -87,5 +105,4 @@ class NewsfeedPostCell: UITableViewCell {
     }
     return strDate
   }
-  
 }
