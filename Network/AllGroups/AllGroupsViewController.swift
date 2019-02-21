@@ -57,27 +57,29 @@ class AllGroupsViewController: UITableViewController, UISearchBarDelegate {
             self?.showAlert(error: error)
           }
           guard let result = result, let self = self else {return}
-          if result {
-            let alert = UIAlertController(title: "Оповещение", message: "Вы вступили в группу", preferredStyle: .alert)
-            let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
-            alert.addAction(action)
-            do {
-              try DatabaseService.saveVKData([self.filteredGroups[indexPath.row]])
-            } catch {
-              self.showAlert(error: error)
+          DispatchQueue.main.async {
+            if result {
+              let alert = UIAlertController(title: "Оповещение", message: "Вы вступили в группу", preferredStyle: .alert)
+              let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
+              alert.addAction(action)
+              do {
+                try DatabaseService.saveVKData([self.filteredGroups[indexPath.row]])
+              } catch {
+                self.showAlert(error: error)
+              }
+              self.present(alert, animated: true, completion: nil)
+              self.performSegue(withIdentifier: "addGroup", sender: self)
+            } else {
+              //создаем контроллер
+              let alert = UIAlertController(title: "Ошибка", message: "Не получается вступить в эту группу", preferredStyle: .alert)
+              //Создаем кнопку
+              let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
+              //Добавляем кнопку на контроллер
+              alert.addAction(action)
+              //Показываем контроллер
+              self.parent?.present(alert, animated: true, completion: nil)
+              tableView.deselectRow(at: indexPath, animated: false)
             }
-            self.present(alert, animated: true, completion: nil)
-            self.performSegue(withIdentifier: "addGroup", sender: self)
-          } else {
-            //создаем контроллер
-            let alert = UIAlertController(title: "Ошибка", message: "Не получается вступить в эту группу", preferredStyle: .alert)
-            //Создаем кнопку
-            let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
-            //Добавляем кнопку на контроллер
-            alert.addAction(action)
-            //Показываем контроллер
-            self.parent?.present(alert, animated: true, completion: nil)
-            tableView.deselectRow(at: indexPath, animated: false)
           }
         }
       }

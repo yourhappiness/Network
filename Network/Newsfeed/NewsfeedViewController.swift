@@ -33,17 +33,17 @@ class NewsfeedViewController: UITableViewController {
         }
         guard let news = news, let users = users, let groups = groups, let self = self else {return}
         self.postNews = news
-        do {
-          let realm = try Realm()
-          try realm.write {
-            realm.add(users, update: true)
-            realm.add(groups, update: true)
-          }
-        } catch {
-          self.showAlert(error: error)
-        }
         DispatchQueue.main.async {
-          self.tableView.reloadData()
+          do {
+            let realm = try Realm()
+            try realm.write {
+              realm.add(users, update: true)
+              realm.add(groups, update: true)
+            }
+          } catch {
+            self.showAlert(error: error)
+          }
+            self.tableView.reloadData()
         }
       }
     }

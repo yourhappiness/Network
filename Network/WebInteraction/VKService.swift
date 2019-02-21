@@ -38,16 +38,14 @@ class VKService {
     //составление URL
     let url = baseURL + path
     //запрос
-    DispatchQueue.global().async {
-      Alamofire.request(url, method: .get, parameters: parameters).responseJSON {response in
-        switch response.result {
-        case .failure(let error):
-          completionHandler(nil, error)
-        case .success(let value):
-          let json = JSON(value)
-          let data = json["response"]["items"].arrayValue.map { Class.parseJSON(json: $0)}
-          completionHandler(data, nil)
-        }
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON(queue: DispatchQueue.global()) {response in
+      switch response.result {
+      case .failure(let error):
+        completionHandler(nil, error)
+      case .success(let value):
+        let json = JSON(value)
+        let data = json["response"]["items"].arrayValue.map { Class.parseJSON(json: $0)}
+        completionHandler(data, nil)
       }
     }
   }
@@ -66,17 +64,15 @@ class VKService {
     //составление URL
     let url = baseURL + path
     //запрос
-    DispatchQueue.global().async {
-      Alamofire.request(url, method: .get, parameters: parameters).responseJSON {response in
-        switch response.result {
-        case .failure(let error):
-          completionHandler(nil, error)
-        case .success(let value):
-          let json = JSON(value)
-          let searchedGroups = json["response"]["items"].arrayValue.map { Group(json: $0)}
-          
-          completionHandler(searchedGroups, nil)
-        }
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON (queue: DispatchQueue.global()) {response in
+      switch response.result {
+      case .failure(let error):
+        completionHandler(nil, error)
+      case .success(let value):
+        let json = JSON(value)
+        let searchedGroups = json["response"]["items"].arrayValue.map { Group(json: $0)}
+        
+        completionHandler(searchedGroups, nil)
       }
     }
   }
@@ -99,19 +95,17 @@ class VKService {
     //составление URL
     let url = baseURL + path
     //запрос
-    DispatchQueue.global().async {
-      Alamofire.request(url, method: .get, parameters: parameters).responseJSON {response in
-        switch response.result {
-        case .failure(let error):
-          completionHandler(nil, error)
-        case .success(let value):
-          let json = JSON(value)
-          let response = json["response"].intValue
-          if response == 1 {
-            completionHandler(true, nil)
-          } else {
-            completionHandler(false, nil)
-          }
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON (queue: DispatchQueue.global()) {response in
+      switch response.result {
+      case .failure(let error):
+        completionHandler(nil, error)
+      case .success(let value):
+        let json = JSON(value)
+        let response = json["response"].intValue
+        if response == 1 {
+          completionHandler(true, nil)
+        } else {
+          completionHandler(false, nil)
         }
       }
     }
@@ -137,16 +131,14 @@ class VKService {
     //составление URL
     let url = baseURL + path
     //запрос
-    DispatchQueue.global().async {
-      Alamofire.request(url, method: .get, parameters: parameters).responseJSON {response in
-        switch response.result {
-        case .failure(let error):
-          completionHandler(nil, error)
-        case .success(let value):
-          let json = JSON(value)
-          let response = json["response"]["likes"].intValue
-          completionHandler(response, nil)
-        }
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON(queue: DispatchQueue.global()) {response in
+      switch response.result {
+      case .failure(let error):
+        completionHandler(nil, error)
+      case .success(let value):
+        let json = JSON(value)
+        let response = json["response"]["likes"].intValue
+        completionHandler(response, nil)
       }
     }
   }
@@ -160,20 +152,18 @@ class VKService {
     //составление URL
     let url = baseURL + path
     //запрос
-    DispatchQueue.global().async {
-      Alamofire.request(url, method: .get, parameters: parameters).responseJSON {response in
-        switch response.result {
-        case .failure(let error):
-          completionHandler(nil, nil, nil, error)
-        case .success(let value):
-          let json = JSON(value)
-          let data = json["response"]["items"].arrayValue.map { T.parseJSON(json: $0)}
-          let users = json["response"]["profiles"].arrayValue.map { User.parseJSON(json: $0)}
-          let groups = json["response"]["groups"].arrayValue.map { Group.parseJSON(json: $0)}
-          NewsfeedPost.nextFrom = json["response"]["next_from"].stringValue
-          completionHandler(data, users, groups, nil)
-        }
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON(queue: DispatchQueue.global()) {response in
+      switch response.result {
+      case .failure(let error):
+        completionHandler(nil, nil, nil, error)
+      case .success(let value):
+        let json = JSON(value)
+        let data = json["response"]["items"].arrayValue.map { T.parseJSON(json: $0)}
+        let users = json["response"]["profiles"].arrayValue.map { User.parseJSON(json: $0)}
+        let groups = json["response"]["groups"].arrayValue.map { Group.parseJSON(json: $0)}
+        NewsfeedPost.nextFrom = json["response"]["next_from"].stringValue
+        completionHandler(data, users, groups, nil)
       }
-    } 
+    }
   }
 }

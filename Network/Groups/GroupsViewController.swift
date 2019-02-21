@@ -41,14 +41,15 @@ class GroupsViewController: UITableViewController {
           self?.showAlert(error: error)
         }
         guard let userGroups = userGroups, let self = self else {return}
-        
-        do {
-          let realm = try Realm()
-          try realm.write {
-              realm.add(userGroups, update: true)
+        DispatchQueue.main.async {
+          do {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(userGroups, update: true)
+            }
+          } catch {
+            self.showAlert(error: error)
           }
-        } catch {
-          self.showAlert(error: error)
         }
       }
 

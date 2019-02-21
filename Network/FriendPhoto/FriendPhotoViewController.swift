@@ -52,14 +52,15 @@ class FriendPhotoViewController: UICollectionViewController {
         }
         
         guard let userPhotos = userPhotos, let self = self else {return}
-        
-        do {
-          guard let realm = try? Realm() else {return}
-          try realm.write {
-            realm.add(userPhotos.sorted(by: {$0.date > $1.date}), update: true)
+        DispatchQueue.main.async {
+          do {
+            guard let realm = try? Realm() else {return}
+            try realm.write {
+              realm.add(userPhotos.sorted(by: {$0.date > $1.date}), update: true)
+            }
+          } catch {
+            self.showAlert(error: error)
           }
-        } catch {
-          self.showAlert(error: error)
         }
       }
     
