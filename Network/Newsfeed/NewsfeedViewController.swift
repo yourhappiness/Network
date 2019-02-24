@@ -24,7 +24,8 @@ class NewsfeedViewController: UITableViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = UITableView.automaticDimension
       //запрос новостей
       vkService.getNews() { [weak self] (news: [NewsfeedPost]?, users: [User]?, groups: [Group]?, error: Error?) in
         if let error = error {

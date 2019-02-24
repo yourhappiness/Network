@@ -44,6 +44,7 @@ final class NewsfeedPost: NewsfeedParameters {
       parameters = [
       "filters": "post",
       "start_from": nextFrom as Any,
+      "count": "10",
       "access_token": Session.instance.token,
       "v": "5.92"
     ]

@@ -54,14 +54,20 @@ class NewsfeedPostCell: UITableViewCell {
       self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
     }
     self.postTime.text = self.getTimePassed(from: pieceOfNews.postDate)
-    self.postText.text = pieceOfNews.postText
-    self.postText.sizeToFit()
-    if self.postText.frame.height > 100 {
-      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 100)
-      self.postText.isScrollEnabled = true
-      self.postText.flashScrollIndicators()
+    if pieceOfNews.postText == "" {
+//      self.postText.frame = CGRect.zero
+      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width, height: 1)
+      self.postText.setNeedsLayout()
     } else {
-      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: self.postText.frame.height)
+      self.postText.text = pieceOfNews.postText
+      self.postText.sizeToFit()
+      if self.postText.frame.height > 100 {
+        self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 100)
+        self.postText.isScrollEnabled = true
+        self.postText.flashScrollIndicators()
+      } else {
+        self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: self.postText.frame.height)
+      }
     }
     self.postText.backgroundColor = .clear
     self.newsLikes.numberOfLikes = pieceOfNews.numberOfLikes
