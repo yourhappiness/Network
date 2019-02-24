@@ -182,9 +182,8 @@
 				70BCACA7220CFC1800CE01CE /* RealmChanges.swift */,
 				700C114521EBB9B5008F4CFD /* DatabaseService.swift */,
 			);
-			name = Database;
-			path = "/Users/anastasiaromanova/Documents/Swift/Пользовательский интерфейс/Network/Network/Database";
-			sourceTree = "<absolute>";
+			path = Database;
+			sourceTree = "<group>";
 		};
 		700DFB7E21C99EA60070C3BB /* Animation */ = {
 			isa = PBXGroup;
