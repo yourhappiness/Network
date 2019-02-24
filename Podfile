@@ -6,10 +6,10 @@ target 'Network' do
   use_frameworks!
 
   # Pods for Network
-  pod 'Alamofire 4.8.1'
-  pod 'SwiftyJSON 4.2.0'
-  pod 'Kingfisher 5.1.0'
-  pod 'RealmSwift 3.13.1'
+  pod 'Alamofire', '~> 4.8.1'
+  pod 'SwiftyJSON', '~> 4.2.0'
+  pod 'Kingfisher', '~> 5.1.0'
+  pod 'RealmSwift', '~> 3.13.1'
 
   target 'NetworkTests' do
     inherit! :search_paths

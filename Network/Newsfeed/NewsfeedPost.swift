@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyJSON
 import Alamofire
+import RealmSwift
+import Kingfisher
 
 final class NewsfeedPost: NewsfeedParameters {
 
@@ -16,11 +18,8 @@ final class NewsfeedPost: NewsfeedParameters {
     let item = NewsfeedPost(json: json)
     return item
   }
-  
 
-  var sourceName: String?
-  var sourcePhoto: UIImage?
-  var sourceId: Int?
+  var sourceId: Int
   var postDate: Double
   var postText: String
   var commentsNumber: Int
@@ -44,6 +43,8 @@ final class NewsfeedPost: NewsfeedParameters {
     }
       parameters = [
       "filters": "post",
+      "start_from": nextFrom as Any,
+      "count": "10",
       "access_token": Session.instance.token,
       "v": "5.92"
     ]
@@ -61,15 +62,4 @@ final class NewsfeedPost: NewsfeedParameters {
     self.numberOfViews = json["views"]["count"].intValue
   }
   
-  init(sourceName: String, sourcePhoto: UIImage, postTime: Double, postText: String, numberOfViews: Int, numberOfLikes: Int, commentsNumber: Int, sharesNumber: Int, isLiked: Bool) {
-    self.sourceName = sourceName
-    self.sourcePhoto = sourcePhoto
-    self.postDate = postTime
-    self.postText = postText
-    self.numberOfLikes = numberOfLikes
-    self.numberOfViews = numberOfViews
-    self.commentsNumber = commentsNumber
-    self.sharesNumber = sharesNumber
-    self.isLiked = isLiked
-  }
 }

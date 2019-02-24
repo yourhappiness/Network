@@ -12,6 +12,8 @@
 		700A1B0F21B5D974004C68EE /* UnwindAnimatedPhotoSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A1B0E21B5D974004C68EE /* UnwindAnimatedPhotoSegue.swift */; };
 		700A93FD21D2FCA70020B22F /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A93FC21D2FCA70020B22F /* Group.swift */; };
 		700A93FF21D302870020B22F /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A93FE21D302870020B22F /* Photo.swift */; };
+		700B2E9422228995002238E3 /* NewsfeedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700B2E9322228995002238E3 /* NewsfeedPhotoCell.swift */; };
+		700B2E9622228CC0002238E3 /* NewsfeedPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700B2E9522228CC0002238E3 /* NewsfeedPhoto.swift */; };
 		700BF59B21A490FD00E05F90 /* FriendsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700BF59A21A490FD00E05F90 /* FriendsHeaderView.swift */; };
 		700BF5A221A4B5D500E05F90 /* FriendsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 700BF5A121A4B5D500E05F90 /* FriendsHeader.xib */; };
 		700C058221B3F2DF000F929A /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700C058121B3F2DF000F929A /* PopAnimator.swift */; };
@@ -80,6 +82,8 @@
 		700A1B0E21B5D974004C68EE /* UnwindAnimatedPhotoSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnwindAnimatedPhotoSegue.swift; sourceTree = "<group>"; };
 		700A93FC21D2FCA70020B22F /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		700A93FE21D302870020B22F /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		700B2E9322228995002238E3 /* NewsfeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedPhotoCell.swift; sourceTree = "<group>"; };
+		700B2E9522228CC0002238E3 /* NewsfeedPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedPhoto.swift; sourceTree = "<group>"; };
 		700BF59A21A490FD00E05F90 /* FriendsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsHeaderView.swift; sourceTree = "<group>"; };
 		700BF5A121A4B5D500E05F90 /* FriendsHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendsHeader.xib; sourceTree = "<group>"; };
 		700C058121B3F2DF000F929A /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
@@ -178,9 +182,8 @@
 				70BCACA7220CFC1800CE01CE /* RealmChanges.swift */,
 				700C114521EBB9B5008F4CFD /* DatabaseService.swift */,
 			);
-			name = Database;
-			path = "/Users/anastasiaromanova/Documents/Swift/Пользовательский интерфейс/Network/Network/Database";
-			sourceTree = "<absolute>";
+			path = Database;
+			sourceTree = "<group>";
 		};
 		700DFB7E21C99EA60070C3BB /* Animation */ = {
 			isa = PBXGroup;
@@ -210,6 +213,8 @@
 				700ED95821A5E91800F58EA3 /* NewsfeedPostCell.swift */,
 				700ED95A21A5EA4800F58EA3 /* NewsfeedPost.swift */,
 				705DCA4322121E4B00DFF0EE /* NewsfeedParameters.swift */,
+				700B2E9322228995002238E3 /* NewsfeedPhotoCell.swift */,
+				700B2E9522228CC0002238E3 /* NewsfeedPhoto.swift */,
 			);
 			path = Newsfeed;
 			sourceTree = "<group>";
@@ -600,6 +605,7 @@
 				703A7F11219716A10005A43F /* GroupsViewController.swift in Sources */,
 				70833963218F3F72008DD8C0 /* AppDelegate.swift in Sources */,
 				7012EABC21F4FA16006F897E /* UIViewController+Ext.swift in Sources */,
+				700B2E9622228CC0002238E3 /* NewsfeedPhoto.swift in Sources */,
 				70CA306321E0FC81005D3392 /* HasParameters.swift in Sources */,
 				703A7F2121972D980005A43F /* FriendPhotoCell.swift in Sources */,
 				700ED95B21A5EA4800F58EA3 /* NewsfeedPost.swift in Sources */,
@@ -614,6 +620,7 @@
 				703A7F0C2197085F0005A43F /* FriendsCell.swift in Sources */,
 				700A93FD21D2FCA70020B22F /* Group.swift in Sources */,
 				700ED95921A5E91800F58EA3 /* NewsfeedPostCell.swift in Sources */,
+				700B2E9422228995002238E3 /* NewsfeedPhotoCell.swift in Sources */,
 				703A7F1821971F200005A43F /* AllGroupsCell.swift in Sources */,
 				705DCA4422121E4B00DFF0EE /* NewsfeedParameters.swift in Sources */,
 				70107E3821CE96C10074B909 /* VKService.swift in Sources */,

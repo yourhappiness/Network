@@ -81,17 +81,19 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
         return
       }
       guard let users = users, let self = self else {return}
-      do {
-        let realm = try Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
-        try realm.write {
-          realm.add(users, update: true)
+      DispatchQueue.main.async {
+        do {
+          let realm = try Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
+          try realm.write {
+            realm.add(users, update: true)
+          }
+        } catch {
+          self.showAlert(error: error)
         }
-      } catch {
-        self.showAlert(error: error)
+          guard let userFriends = self.userFriends else {return}
+          self.firstLettersControl.setupView(with: userFriends)
+          self.activityIndicator?.stopAnimation()
       }
-      guard let userFriends = self.userFriends else {return}
-      self.firstLettersControl.setupView(with: userFriends)
-      self.activityIndicator?.stopAnimation()
     }
   }
   
