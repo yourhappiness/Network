@@ -763,26 +763,40 @@
                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Uh-as-NXQ">
-                                            <rect key="frame" x="28" y="69" width="355" height="355"/>
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Uh-as-NXQ">
+                                            <rect key="frame" x="10" y="69" width="355" height="355"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="5Uh-as-NXQ" secondAttribute="height" multiplier="1:1" id="ruW-pM-YJk"/>
                                             </constraints>
-                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="QnQ-Lo-IPr">
-                                                <size key="itemSize" width="50" height="50"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="2" id="QnQ-Lo-IPr">
+                                                <size key="itemSize" width="150" height="150"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BSK-Uf-2r6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="PostPhotoCell" id="BSK-Uf-2r6" customClass="PostPhotoCollectionViewCell" customModule="Network" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                                         <autoresizingMask key="autoresizingMask"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9c4-6v-vVD">
+                                                                <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                                            </imageView>
+                                                        </subviews>
                                                     </view>
+                                                    <constraints>
+                                                        <constraint firstItem="9c4-6v-vVD" firstAttribute="top" secondItem="BSK-Uf-2r6" secondAttribute="top" id="Pyp-Jl-7UT"/>
+                                                        <constraint firstAttribute="bottom" secondItem="9c4-6v-vVD" secondAttribute="bottom" id="QRY-mq-KPs"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9c4-6v-vVD" secondAttribute="trailing" id="leB-OD-HHJ"/>
+                                                        <constraint firstItem="9c4-6v-vVD" firstAttribute="leading" secondItem="BSK-Uf-2r6" secondAttribute="leading" id="u3r-pl-QEa"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <outlet property="postPhoto" destination="9c4-6v-vVD" id="To1-8X-v6o"/>
+                                                    </connections>
                                                 </collectionViewCell>
                                             </cells>
                                             <connections>
@@ -798,16 +812,16 @@
                                         <constraint firstItem="FCp-02-cVn" firstAttribute="leading" secondItem="SDQ-h4-MdB" secondAttribute="leading" constant="12" id="26A-31-Ch8"/>
                                         <constraint firstItem="z5I-JL-HSX" firstAttribute="leading" secondItem="FCp-02-cVn" secondAttribute="trailing" constant="18" id="9cO-BN-h5P"/>
                                         <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="vrt-YU-g6Q" secondAttribute="trailing" constant="12" id="NmZ-dQ-00R"/>
+                                        <constraint firstAttribute="trailing" secondItem="5Uh-as-NXQ" secondAttribute="trailing" constant="10" id="SvR-Ki-ZFc"/>
                                         <constraint firstItem="5Uh-as-NXQ" firstAttribute="top" secondItem="FCp-02-cVn" secondAttribute="bottom" constant="15" id="Tjm-3G-nB0"/>
                                         <constraint firstItem="z5I-JL-HSX" firstAttribute="top" secondItem="vrt-YU-g6Q" secondAttribute="bottomMargin" constant="7" id="dRL-RB-Xep"/>
-                                        <constraint firstItem="5Uh-as-NXQ" firstAttribute="leading" secondItem="SDQ-h4-MdB" secondAttribute="leadingMargin" constant="12" id="eLr-un-YHl"/>
+                                        <constraint firstItem="5Uh-as-NXQ" firstAttribute="leading" secondItem="SDQ-h4-MdB" secondAttribute="leading" constant="10" id="eLr-un-YHl"/>
                                         <constraint firstItem="vrt-YU-g6Q" firstAttribute="top" secondItem="FCp-02-cVn" secondAttribute="top" constant="10" id="gte-2k-i6U"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="5Uh-as-NXQ" secondAttribute="bottom" constant="15" id="ifl-Mu-pdk"/>
                                         <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="z5I-JL-HSX" secondAttribute="trailing" constant="12" id="lbD-gg-K8B"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="newsHeader" destination="vrt-YU-g6Q" id="TlS-dB-ffa"/>
                                     <outlet property="photoCollectionView" destination="5Uh-as-NXQ" id="j01-6h-c2o"/>
                                     <outlet property="postTime" destination="z5I-JL-HSX" id="Nnd-Yy-Twp"/>
                                     <outlet property="sourceName" destination="vrt-YU-g6Q" id="Kys-Jd-DzU"/>

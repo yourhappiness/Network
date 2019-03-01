@@ -15,7 +15,7 @@ class NewsfeedViewController: UITableViewController {
 //    var longPressRecognizer = UILongPressGestureRecognizer()
   
     private let vkService = VKService()
-    private var postNews: [NewsfeedPost]?
+    private var postNews: [NewsfeedPhoto]?
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
@@ -24,10 +24,31 @@ class NewsfeedViewController: UITableViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.rowHeight = UITableView.automaticDimension
-//        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
       //запрос новостей
-      vkService.getNews() { [weak self] (news: [NewsfeedPost]?, users: [User]?, groups: [Group]?, error: Error?) in
+//      vkService.getNews() { [weak self] (news: [NewsfeedPost]?, users: [User]?, groups: [Group]?, error: Error?) in
+//        if let error = error {
+//          self?.showAlert(error: error)
+//          return
+//        }
+//        guard let news = news, let users = users, let groups = groups, let self = self else {return}
+//        self.postNews = news
+//        DispatchQueue.main.async {
+//          do {
+//            let realm = try Realm()
+//            try realm.write {
+//              realm.add(users, update: true)
+//              realm.add(groups, update: true)
+//            }
+//          } catch {
+//            self.showAlert(error: error)
+//          }
+//            self.tableView.reloadData()
+//        }
+//      }
+      
+      vkService.getNews() { [weak self] (news: [NewsfeedPhoto]?, users: [User]?, groups: [Group]?, error: Error?) in
         if let error = error {
           self?.showAlert(error: error)
           return
@@ -44,9 +65,10 @@ class NewsfeedViewController: UITableViewController {
           } catch {
             self.showAlert(error: error)
           }
-            self.tableView.reloadData()
+          self.tableView.reloadData()
         }
       }
+      
     }
 
     // MARK: - Table view data source
@@ -61,7 +83,7 @@ class NewsfeedViewController: UITableViewController {
 
   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPhotoCell", for: indexPath) as! NewsfeedPhotoCell
         guard let news = postNews else {return UITableViewCell()}
         cell.configure(with: news[indexPath.row])
 //        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(animatePhotoWithTap(_:)))

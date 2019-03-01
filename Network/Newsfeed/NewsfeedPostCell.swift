@@ -33,18 +33,12 @@ class NewsfeedPostCell: UITableViewCell {
       self.postText.translatesAutoresizingMaskIntoConstraints = true
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
   func configure(with pieceOfNews: NewsfeedPost) {
     if pieceOfNews.sourceId > 0 {
       self.sourceUser = try? Realm().objects(User.self).filter("id = %@", pieceOfNews.sourceId)
       guard let sourceUser = self.sourceUser else {return}
       let source = Array(sourceUser)[0]
-      self.sourceName.text = source.firstName + source.lastName
+      self.sourceName.text = source.firstName + " " + source.lastName
       self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
     } else if pieceOfNews.sourceId < 0 {
       self.sourceGroup = try? Realm().objects(Group.self).filter("id = %@", -pieceOfNews.sourceId)

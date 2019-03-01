@@ -29,8 +29,6 @@ final class NewsfeedPost: NewsfeedParameters {
   var numberOfViews: Int
   static var nextFrom: String?
   
-  static var path: String = "/newsfeed.get"
-  
   static func getParameters() -> Parameters {
     var parameters: Parameters
     guard self.nextFrom != nil else {

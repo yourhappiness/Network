@@ -146,7 +146,7 @@ class VKService {
   //Получение новостей
   func getNews <T: NewsfeedParameters> (completionHandler: @escaping ([T]?, [User]?, [Group]?, Error?) -> Void) {
     //путь для метода
-    let path = T.path
+    let path = "/newsfeed.get"
     //параметры
     let parameters = T.getParameters()
     //составление URL

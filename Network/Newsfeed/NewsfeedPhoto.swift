@@ -21,11 +21,10 @@ final class NewsfeedPhoto: NewsfeedParameters {
   
   var sourceId: Int
   var postDate: Double
-  var numberOfPhotos: Int
+  var photos: [Photo]
 
   static var nextFrom: String?
-  
-  static var path: String = "/newsfeed.get"
+
   
   static func getParameters() -> Parameters {
     var parameters: Parameters
@@ -39,6 +38,7 @@ final class NewsfeedPhoto: NewsfeedParameters {
     }
     parameters = [
       "filters": "photo",
+      "max_photos": "10",
       "start_from": nextFrom as Any,
       "count": "10",
       "access_token": Session.instance.token,
@@ -50,8 +50,7 @@ final class NewsfeedPhoto: NewsfeedParameters {
   init (json: JSON) {
     self.sourceId = json["source_id"].intValue
     self.postDate = json["date"].doubleValue
-    self.numberOfPhotos = json["photos"]["count"].intValue
-
+    self.photos = json["photos"]["items"].arrayValue.map{Photo.init(json: $0)}
   }
   
 }
