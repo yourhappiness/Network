@@ -709,11 +709,9 @@ Aw
                                     </subviews>
                                     <color key="backgroundColor" red="0.6133174817" green="0.65393724149999999" blue="0.94288374350000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
-                                        <constraint firstItem="LfN-Uf-l5X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vga-nb-NjB" secondAttribute="bottom" constant="15" id="08U-LS-H0F"/>
                                         <constraint firstItem="jdD-oV-jtb" firstAttribute="leading" secondItem="JU4-9e-Mnw" secondAttribute="leading" constant="12" id="2KE-I4-Lqd"/>
                                         <constraint firstAttribute="bottom" secondItem="KYH-rg-4Hc" secondAttribute="bottom" id="36m-dD-oZO"/>
                                         <constraint firstItem="aL2-gR-V8y" firstAttribute="top" secondItem="kX4-yx-zDq" secondAttribute="bottom" constant="15" id="49c-27-09m"/>
-                                        <constraint firstItem="LfN-Uf-l5X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="kX4-yx-zDq" secondAttribute="bottom" constant="15" id="68C-bJ-0Sp"/>
                                         <constraint firstItem="vga-nb-NjB" firstAttribute="leading" secondItem="jdD-oV-jtb" secondAttribute="trailing" constant="18" id="8wm-rQ-XmU"/>
                                         <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="vga-nb-NjB" secondAttribute="trailing" constant="12" id="E5h-fY-2Pp"/>
                                         <constraint firstItem="KYH-rg-4Hc" firstAttribute="leading" secondItem="LfN-Uf-l5X" secondAttribute="trailing" constant="100" id="Lxr-xb-LjY"/>
@@ -724,7 +722,6 @@ Aw
                                         <constraint firstItem="FD2-pk-mmn" firstAttribute="top" secondItem="JU4-9e-Mnw" secondAttribute="top" constant="14" id="Tfm-oV-duQ"/>
                                         <constraint firstItem="LfN-Uf-l5X" firstAttribute="top" secondItem="aL2-gR-V8y" secondAttribute="bottom" constant="15" id="UPz-Y2-fzc"/>
                                         <constraint firstItem="LfN-Uf-l5X" firstAttribute="leading" secondItem="JU4-9e-Mnw" secondAttribute="leading" constant="12" id="VtV-C3-tbp"/>
-                                        <constraint firstItem="LfN-Uf-l5X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jdD-oV-jtb" secondAttribute="bottom" constant="15" id="XvE-wI-KRz"/>
                                         <constraint firstItem="aL2-gR-V8y" firstAttribute="leading" secondItem="JU4-9e-Mnw" secondAttribute="leading" constant="10" id="gvQ-iA-zDI"/>
                                         <constraint firstItem="vga-nb-NjB" firstAttribute="top" secondItem="FD2-pk-mmn" secondAttribute="bottomMargin" constant="7" id="hXd-Ad-2CQ"/>
                                         <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="FD2-pk-mmn" secondAttribute="trailing" constant="12" id="iob-to-EGP"/>

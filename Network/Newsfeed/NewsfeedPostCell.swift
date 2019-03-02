@@ -30,14 +30,16 @@ class NewsfeedPostCell: UITableViewCell {
   var sourceUser: Results<User>?
   var sourceGroup: Results<Group>?
   var photos: [Photo]?
-  
+  var imageHeightConstraint = NSLayoutConstraint()
+  var textHeightConstraint = NSLayoutConstraint()
 
   //MARK: - Cell configuration
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
     self.postText.translatesAutoresizingMaskIntoConstraints = true
-    self.newsResponse.topAnchor.constraint(greaterThanOrEqualTo: self.postText.bottomAnchor, constant: 15).isActive = true
+    self.postPhoto.translatesAutoresizingMaskIntoConstraints = false
+    self.newsResponse.topAnchor.constraint(greaterThanOrEqualTo: self.sourcePhoto.bottomAnchor, constant: 15).isActive = true
   }
   
   func configure(with pieceOfNews: NewsfeedPost, completion: @escaping () -> Void) {
@@ -56,8 +58,9 @@ class NewsfeedPostCell: UITableViewCell {
     }
     self.postTime.text = self.getTimePassed(from: pieceOfNews.postDate)
     if pieceOfNews.postText == "" {
-      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: 0, height: 0)
-      self.postText.setNeedsLayout()
+      self.postText.translatesAutoresizingMaskIntoConstraints = false
+      textHeightConstraint = self.postText.heightAnchor.constraint(equalToConstant: 0)
+      textHeightConstraint.isActive = true
     } else {
       self.postText.text = pieceOfNews.postText
       self.postText.sizeToFit()
@@ -74,15 +77,16 @@ class NewsfeedPostCell: UITableViewCell {
     self.postText.backgroundColor = .clear
     self.photos = pieceOfNews.photos
     if let photo = self.photos?[0] {
-//      self.postPhoto.translatesAutoresizingMaskIntoConstraints = false
       self.postPhoto.kf.setImage(with: URL(string: photo.photoURL)) { _ in
         completion()
       }
-//      self.postPhoto.frame = CGRect(x: self.postPhoto.frame.minX, y: self.postPhoto.frame.minY, width: self.frame.width - 20, height: (self.frame.width - 20) * CGFloat(photo.height/photo.width))
-//      self.postPhoto.transform = CGAffineTransform(scaleX: 0, y: CGFloat(photo.height/photo.width))
+      self.postPhoto.frame = CGRect(x: self.postPhoto.frame.minX, y: self.postPhoto.frame.minY, width: self.frame.width - 20, height: (self.frame.width - 20) * CGFloat(photo.height/photo.width))
+      imageHeightConstraint = self.postPhoto.heightAnchor.constraint(equalTo: self.postPhoto.widthAnchor
+        , multiplier: CGFloat(photo.height/photo.width))
+      imageHeightConstraint.isActive = true
     } else {
-      self.postPhoto.frame = CGRect(x: self.postPhoto.frame.minX, y: self.postPhoto.frame.minY, width: 0, height: 0)
-      self.postPhoto.setNeedsLayout()
+      imageHeightConstraint = self.postPhoto.heightAnchor.constraint(equalToConstant: 0)
+      imageHeightConstraint.isActive = true
     }
     self.newsLikes.numberOfLikes = pieceOfNews.numberOfLikes
     self.commentsNumber.text = String(pieceOfNews.commentsNumber)
@@ -99,13 +103,14 @@ class NewsfeedPostCell: UITableViewCell {
     sourcePhoto.image = nil
     postTime.text = nil
     postText.text = nil
+    postText.removeConstraints([textHeightConstraint])
+    postText.translatesAutoresizingMaskIntoConstraints = true
     postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 1)
     postText.setNeedsLayout()
     postText.isScrollEnabled = false
     photos = nil
     self.postPhoto.image = nil
-    self.postPhoto.frame = CGRect(x: self.postPhoto.frame.minX, y: self.postPhoto.frame.minY, width: self.frame.width - 20, height: 1)
-    self.postPhoto.setNeedsLayout()
+    self.postPhoto.removeConstraints([imageHeightConstraint])
     newsLikes.numberOfLikes = 0
     commentsNumber.text = nil
     sharesNumber.text = nil
