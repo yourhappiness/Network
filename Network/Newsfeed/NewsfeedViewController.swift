@@ -62,7 +62,11 @@ class NewsfeedViewController: UITableViewController {
         guard let news = postNews else {return UITableViewCell()}
         if let element = news[indexPath.row] as? NewsfeedPost {
           let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
-          cell.configure(with: element)
+          cell.configure(with: element) { [weak self] in
+            guard let self = self else { return }
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+          }
           return cell
         } else if let element = news[indexPath.row] as? NewsfeedPhoto {
           let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPhotoCell", for: indexPath) as! NewsfeedPhotoCell
