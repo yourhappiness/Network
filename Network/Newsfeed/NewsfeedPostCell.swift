@@ -17,22 +17,28 @@ class NewsfeedPostCell: UITableViewCell {
   @IBOutlet weak var sourceName: UILabel!
   @IBOutlet weak var postTime: UILabel!
   @IBOutlet weak var postText: UITextView!
+  @IBOutlet weak var postPhoto: UIImageView!
+  @IBOutlet weak var newsResponse: UIView!
   @IBOutlet weak var newsLikes: LikeControl!
   @IBOutlet weak var commentButton: UIButton!
   @IBOutlet weak var commentsNumber: UILabel!
   @IBOutlet weak var shareButton: UIButton!
   @IBOutlet weak var sharesNumber: UILabel!
+  @IBOutlet weak var newsViewsControl: UIView!
   @IBOutlet weak var newsViews: UILabel!
   
   var sourceUser: Results<User>?
   var sourceGroup: Results<Group>?
+  var photos: [Photo]?
   
-  override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-      self.postText.translatesAutoresizingMaskIntoConstraints = true
-    }
 
+  //MARK: - Cell configuration
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    // Initialization code
+    self.postText.translatesAutoresizingMaskIntoConstraints = true
+  }
+  
   func configure(with pieceOfNews: NewsfeedPost) {
     if pieceOfNews.sourceId > 0 {
       self.sourceUser = try? Realm().objects(User.self).filter("id = %@", pieceOfNews.sourceId)
@@ -50,7 +56,7 @@ class NewsfeedPostCell: UITableViewCell {
     self.postTime.text = self.getTimePassed(from: pieceOfNews.postDate)
     if pieceOfNews.postText == "" {
 //      self.postText.frame = CGRect.zero
-      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width, height: 1)
+      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width, height: 0)
       self.postText.setNeedsLayout()
     } else {
       self.postText.text = pieceOfNews.postText
@@ -64,12 +70,25 @@ class NewsfeedPostCell: UITableViewCell {
       }
     }
     self.postText.backgroundColor = .clear
+    self.photos = pieceOfNews.photos
+    if let photo = self.photos?[0] {
+      self.postPhoto.translatesAutoresizingMaskIntoConstraints = false
+      self.postPhoto.kf.setImage(with: URL(string: photo.photoURL))
+      self.postPhoto.heightAnchor.constraint(equalTo: self.postPhoto.widthAnchor, multiplier: CGFloat(photo.height/photo.width)).isActive = true
+    } else {
+      self.postPhoto.frame = CGRect.zero
+      self.postPhoto.heightAnchor.constraint(equalTo: self.postPhoto.widthAnchor).isActive = false
+      self.postPhoto.setNeedsLayout()
+      self.postPhoto.layoutIfNeeded()
+    }
     self.newsLikes.numberOfLikes = pieceOfNews.numberOfLikes
     self.commentsNumber.text = String(pieceOfNews.commentsNumber)
     self.sharesNumber.text = String(pieceOfNews.sharesNumber)
     self.newsLikes.isLiked = pieceOfNews.isLiked
     self.newsLikes.setupView()
     self.newsViews.text = String(pieceOfNews.numberOfViews)
+    self.layoutSubviews()
+    self.layoutIfNeeded()
   }
   
   override func prepareForReuse() {
@@ -80,6 +99,10 @@ class NewsfeedPostCell: UITableViewCell {
     postText.text = nil
     postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 1)
     postText.isScrollEnabled = false
+    photos = nil
+    self.postPhoto.image = nil
+    self.postPhoto.setNeedsLayout()
+    self.postPhoto.layoutIfNeeded()
     newsLikes.numberOfLikes = 0
     commentsNumber.text = nil
     sharesNumber.text = nil

@@ -16,4 +16,7 @@ class Session {
   
   var token: String = ""
   var userId: Int = 0
+  
+  //for newsfeed update
+  var nextFrom: String?
 }

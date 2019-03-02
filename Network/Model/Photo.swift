@@ -24,6 +24,8 @@ final class Photo: Object, HasParameters {
   @objc dynamic var numberOfLikes: Int = 0
   @objc dynamic var isLiked: Bool = false
   @objc dynamic var date: Double = 0.0
+  @objc dynamic var width: Double = 0.0
+  @objc dynamic var height: Double = 0.0
   var user = LinkingObjects(fromType: User.self, property: "photos")
   
   static var path: String = "/photos.get"
@@ -43,9 +45,12 @@ final class Photo: Object, HasParameters {
     self.userId = json["owner_id"].intValue
     guard let result = json["sizes"].arrayValue.first(where: {$0["type"].stringValue == "x"}) else { return}
     self.photoURL = result["url"].stringValue
+    self.width = result["width"].doubleValue
+    self.height = result["height"].doubleValue
     self.numberOfLikes = json["likes"]["count"].intValue
     self.isLiked = json["likes"]["user_likes"].boolValue
     self.date = json["date"].doubleValue
+    
     self.uniqueId = String(self.id) + String(self.userId)
   }
   

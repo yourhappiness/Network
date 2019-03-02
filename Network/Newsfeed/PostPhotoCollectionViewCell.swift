@@ -9,15 +9,27 @@
 import UIKit
 
 class PostPhotoCollectionViewCell: UICollectionViewCell {
-  @IBOutlet weak var postPhoto: UIImageView!
+  var postPhoto: UIImageView?
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    postPhoto = UIImageView(frame: self.bounds)
+    self.addSubview(postPhoto!)
+    postPhoto?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    postPhoto?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    postPhoto?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    postPhoto?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+    postPhoto?.contentMode = .scaleAspectFill
+  }
   
   func configure(with photo: Photo) {
-    postPhoto.kf.setImage(with: URL(string: photo.photoURL))
+    awakeFromNib()
+    postPhoto?.kf.setImage(with: URL(string: photo.photoURL))
   }
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    self.postPhoto.image = nil
+    self.postPhoto?.image = nil
   }
   
 }

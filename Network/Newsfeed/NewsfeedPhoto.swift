@@ -12,7 +12,7 @@ import Alamofire
 import RealmSwift
 import Kingfisher
 
-final class NewsfeedPhoto: NewsfeedParameters {
+final class NewsfeedPhoto: NewsfeedCompatible {
   
   static func parseJSON(json: JSON) -> NewsfeedPhoto {
     let item = NewsfeedPhoto(json: json)
@@ -22,30 +22,6 @@ final class NewsfeedPhoto: NewsfeedParameters {
   var sourceId: Int
   var postDate: Double
   var photos: [Photo]
-
-  static var nextFrom: String?
-
-  
-  static func getParameters() -> Parameters {
-    var parameters: Parameters
-    guard self.nextFrom != nil else {
-      parameters = [
-        "filters": "photo",
-        "access_token": Session.instance.token,
-        "v": "5.92"
-      ]
-      return parameters
-    }
-    parameters = [
-      "filters": "photo",
-      "max_photos": "10",
-      "start_from": nextFrom as Any,
-      "count": "10",
-      "access_token": Session.instance.token,
-      "v": "5.92"
-    ]
-    return parameters
-  }
   
   init (json: JSON) {
     self.sourceId = json["source_id"].intValue

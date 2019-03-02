@@ -23,9 +23,6 @@ class NewsfeedPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollection
   var photos: [Photo]?
   
   //MARK: - CollectionView
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
-  }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     guard let numberOfPhotos = photos?.count else {return 0}
@@ -76,9 +73,6 @@ class NewsfeedPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollection
       return CGSize(width: collectionWidth, height: collectionHeight)
     }
   }
-
-  
-  
   
   //MARK: - Cell configuration
   override func awakeFromNib() {
