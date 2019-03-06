@@ -144,25 +144,53 @@ class VKService {
   }
   
   //Получение новостей
-  func getNews <T: NewsfeedParameters> (completionHandler: @escaping ([T]?, [User]?, [Group]?, Error?) -> Void) {
+  func getNews (completionHandler: @escaping ([NewsfeedCompatible]?, [User]?, [Group]?, Error?) -> Void) {
     //путь для метода
-    let path = T.path
+    let path = "/newsfeed.get"
     //параметры
-    let parameters = T.getParameters()
+    var parameters: Parameters
+    
+    if Session.instance.nextFrom == nil {
+      parameters = [
+        "filters": "post,photo",
+        "max_photos": "10",
+        "count": "20",
+        "access_token": Session.instance.token,
+        "v": "5.92"
+      ]
+    } else {
+      parameters = [
+        "filters": "post,photo",
+        "max_photos": "10",
+        "start_from": Session.instance.nextFrom as Any,
+        "count": "20",
+        "access_token": Session.instance.token,
+        "v": "5.92"
+      ]
+    }
+    
     //составление URL
     let url = baseURL + path
     //запрос
-    Alamofire.request(url, method: .get, parameters: parameters).responseJSON(queue: DispatchQueue.global()) {response in
+    Alamofire.request(url, method: .get, parameters: parameters).responseJSON(queue: DispatchQueue.global(qos: .userInteractive)) {response in
       switch response.result {
       case .failure(let error):
         completionHandler(nil, nil, nil, error)
       case .success(let value):
         let json = JSON(value)
-        let data = json["response"]["items"].arrayValue.map { T.parseJSON(json: $0)}
+        let items: [NewsfeedCompatible] = json["response"]["items"].arrayValue.map {
+          var item: NewsfeedCompatible
+          if $0["type"].stringValue == "post" {
+            item = NewsfeedPost.parseJSON(json: $0)
+          } else {
+            item = NewsfeedPhoto.parseJSON(json: $0)
+          }
+          return item
+        }
         let users = json["response"]["profiles"].arrayValue.map { User.parseJSON(json: $0)}
         let groups = json["response"]["groups"].arrayValue.map { Group.parseJSON(json: $0)}
-        NewsfeedPost.nextFrom = json["response"]["next_from"].stringValue
-        completionHandler(data, users, groups, nil)
+        Session.instance.nextFrom = json["response"]["next_from"].stringValue
+        completionHandler(items, users, groups, nil)
       }
     }
   }

@@ -31,6 +31,7 @@
 		7012EABC21F4FA16006F897E /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7012EABB21F4FA16006F897E /* UIViewController+Ext.swift */; };
 		70143C1C21A9F5E2005918BC /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70143C1B21A9F5E2005918BC /* ActivityIndicatorView.swift */; };
 		701DF59421CC3C980084A221 /* VKLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701DF59321CC3C980084A221 /* VKLoginViewController.swift */; };
+		7028BE2E22273594009ED355 /* PostPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7028BE2D22273594009ED355 /* PostPhotoCollectionViewCell.swift */; };
 		703A7F0C2197085F0005A43F /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703A7F0B2197085F0005A43F /* FriendsCell.swift */; };
 		703A7F0E21970DAC0005A43F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703A7F0D21970DAC0005A43F /* FriendsViewController.swift */; };
 		703A7F11219716A10005A43F /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703A7F10219716A10005A43F /* GroupsViewController.swift */; };
@@ -39,7 +40,7 @@
 		703A7F1821971F200005A43F /* AllGroupsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703A7F1721971F200005A43F /* AllGroupsCell.swift */; };
 		703A7F1F21972D5E0005A43F /* FriendPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703A7F1E21972D5E0005A43F /* FriendPhotoViewController.swift */; };
 		703A7F2121972D980005A43F /* FriendPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703A7F2021972D980005A43F /* FriendPhotoCell.swift */; };
-		705DCA4422121E4B00DFF0EE /* NewsfeedParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705DCA4322121E4B00DFF0EE /* NewsfeedParameters.swift */; };
+		705DCA4422121E4B00DFF0EE /* NewsfeedCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705DCA4322121E4B00DFF0EE /* NewsfeedCompatible.swift */; };
 		706FE7BA219A1D8800F1BB38 /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706FE7B9219A1D8800F1BB38 /* PhotoView.swift */; };
 		70833963218F3F72008DD8C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70833962218F3F72008DD8C0 /* AppDelegate.swift */; };
 		70833968218F3F72008DD8C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70833966218F3F72008DD8C0 /* Main.storyboard */; };
@@ -103,6 +104,7 @@
 		701DF59321CC3C980084A221 /* VKLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLoginViewController.swift; sourceTree = "<group>"; };
 		7020EF23219C396D00BD2A32 /* Network.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Network.xcodeproj; sourceTree = "<group>"; };
 		7020EF26219C39B200BD2A32 /* InterfaceBuilderKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InterfaceBuilderKit.framework; path = Library/Frameworks/InterfaceBuilderKit.framework; sourceTree = DEVELOPER_DIR; };
+		7028BE2D22273594009ED355 /* PostPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		703A7F0B2197085F0005A43F /* FriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		703A7F0D21970DAC0005A43F /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		703A7F10219716A10005A43F /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
@@ -111,7 +113,7 @@
 		703A7F1721971F200005A43F /* AllGroupsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsCell.swift; sourceTree = "<group>"; };
 		703A7F1E21972D5E0005A43F /* FriendPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPhotoViewController.swift; sourceTree = "<group>"; };
 		703A7F2021972D980005A43F /* FriendPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPhotoCell.swift; sourceTree = "<group>"; };
-		705DCA4322121E4B00DFF0EE /* NewsfeedParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedParameters.swift; sourceTree = "<group>"; };
+		705DCA4322121E4B00DFF0EE /* NewsfeedCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedCompatible.swift; sourceTree = "<group>"; };
 		706FE7B9219A1D8800F1BB38 /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		7083395F218F3F72008DD8C0 /* Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Network.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70833962218F3F72008DD8C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -212,9 +214,10 @@
 				700ED95621A5E8CF00F58EA3 /* NewsfeedViewController.swift */,
 				700ED95821A5E91800F58EA3 /* NewsfeedPostCell.swift */,
 				700ED95A21A5EA4800F58EA3 /* NewsfeedPost.swift */,
-				705DCA4322121E4B00DFF0EE /* NewsfeedParameters.swift */,
+				705DCA4322121E4B00DFF0EE /* NewsfeedCompatible.swift */,
 				700B2E9322228995002238E3 /* NewsfeedPhotoCell.swift */,
 				700B2E9522228CC0002238E3 /* NewsfeedPhoto.swift */,
+				7028BE2D22273594009ED355 /* PostPhotoCollectionViewCell.swift */,
 			);
 			path = Newsfeed;
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				706FE7BA219A1D8800F1BB38 /* PhotoView.swift in Sources */,
 				700C058221B3F2DF000F929A /* PopAnimator.swift in Sources */,
 				703A7F0E21970DAC0005A43F /* FriendsViewController.swift in Sources */,
+				7028BE2E22273594009ED355 /* PostPhotoCollectionViewCell.swift in Sources */,
 				703A7F11219716A10005A43F /* GroupsViewController.swift in Sources */,
 				70833963218F3F72008DD8C0 /* AppDelegate.swift in Sources */,
 				7012EABC21F4FA16006F897E /* UIViewController+Ext.swift in Sources */,
@@ -622,7 +626,7 @@
 				700ED95921A5E91800F58EA3 /* NewsfeedPostCell.swift in Sources */,
 				700B2E9422228995002238E3 /* NewsfeedPhotoCell.swift in Sources */,
 				703A7F1821971F200005A43F /* AllGroupsCell.swift in Sources */,
-				705DCA4422121E4B00DFF0EE /* NewsfeedParameters.swift in Sources */,
+				705DCA4422121E4B00DFF0EE /* NewsfeedCompatible.swift in Sources */,
 				70107E3821CE96C10074B909 /* VKService.swift in Sources */,
 				70ED401E21D1F96400467C1B /* User.swift in Sources */,
 				700223F421B494A500791999 /* AnimatedPhotoSegue.swift in Sources */,

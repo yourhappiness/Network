@@ -1,5 +1,5 @@
 //
-//  NewsfeedParameters.swift
+//  NewsfeedCompatible.swift
 //  Network
 //
 //  Created by Anastasia Romanova on 12/02/2019.
@@ -10,9 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-protocol NewsfeedParameters: class {
-  static var path: String {get}
-  static func getParameters() -> Parameters
-  
+protocol NewsfeedCompatible: class {
+
   static func parseJSON(json: JSON) -> Self
 }
