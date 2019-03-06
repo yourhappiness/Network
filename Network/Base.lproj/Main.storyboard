@@ -588,7 +588,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KYH-rg-4Hc" userLabel="NewsViews">
-                                            <rect key="frame" x="327" y="359.5" width="60" height="40"/>
+                                            <rect key="frame" x="297" y="359.5" width="60" height="40"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="View" translatesAutoresizingMaskIntoConstraints="NO" id="D0z-Jd-MFa">
                                                     <rect key="frame" x="5" y="9" width="24" height="22"/>
@@ -714,7 +714,6 @@ Aw
                                         <constraint firstItem="aL2-gR-V8y" firstAttribute="top" secondItem="kX4-yx-zDq" secondAttribute="bottom" constant="15" id="49c-27-09m"/>
                                         <constraint firstItem="vga-nb-NjB" firstAttribute="leading" secondItem="jdD-oV-jtb" secondAttribute="trailing" constant="18" id="8wm-rQ-XmU"/>
                                         <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="vga-nb-NjB" secondAttribute="trailing" constant="12" id="E5h-fY-2Pp"/>
-                                        <constraint firstItem="KYH-rg-4Hc" firstAttribute="leading" secondItem="LfN-Uf-l5X" secondAttribute="trailing" constant="100" id="Lxr-xb-LjY"/>
                                         <constraint firstItem="kX4-yx-zDq" firstAttribute="leading" secondItem="JU4-9e-Mnw" secondAttribute="leading" constant="12" id="S4C-M8-A0v"/>
                                         <constraint firstItem="FD2-pk-mmn" firstAttribute="top" secondItem="jdD-oV-jtb" secondAttribute="top" constant="10" id="TFu-kF-OhV"/>
                                         <constraint firstItem="FD2-pk-mmn" firstAttribute="leading" secondItem="jdD-oV-jtb" secondAttribute="trailing" constant="18" id="TVl-sr-sax"/>
@@ -729,6 +728,7 @@ Aw
                                         <constraint firstItem="jdD-oV-jtb" firstAttribute="top" secondItem="JU4-9e-Mnw" secondAttribute="top" constant="4" id="mS8-ST-WAs"/>
                                         <constraint firstAttribute="bottom" secondItem="LfN-Uf-l5X" secondAttribute="bottom" id="sp6-fa-bzd"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kX4-yx-zDq" secondAttribute="trailing" constant="12" id="tIE-82-yOp"/>
+                                        <constraint firstItem="KYH-rg-4Hc" firstAttribute="leading" secondItem="LfN-Uf-l5X" secondAttribute="trailing" constant="70" id="u9p-hZ-9Bk"/>
                                         <constraint firstItem="kX4-yx-zDq" firstAttribute="top" secondItem="jdD-oV-jtb" secondAttribute="bottom" constant="15" id="xio-1y-bhj"/>
                                     </constraints>
                                 </tableViewCellContentView>
