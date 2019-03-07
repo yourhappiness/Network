@@ -17,6 +17,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
 
   var activityIndicator: ActivityIndicatorView?
   private let vkService = VKService()
+  private var photoService: PhotoService?
   
   private var userFriends: Results<User>? = try? Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true)).objects(User.self).filter("deactivated = %@", false)
   private var notificationToken: NotificationToken?
@@ -31,6 +32,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
       view.bringSubviewToFront(firstLettersControl)
       firstLettersControl.layer.isOpaque = false
       firstLettersControl.layer.backgroundColor = UIColor.clear.cgColor
+      photoService = PhotoService(container: self.tableView)
 
       notificationToken = userFriends?.observe { [weak self] changes in
         guard let self = self, let userFriends = self.userFriends else {return}
@@ -230,7 +232,7 @@ extension FriendsViewController: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: "FriendsCell", for: indexPath) as! FriendsCell
     var friendProp: User
     friendProp = groupedFriends[indexPath.section][indexPath.row]
-    cell.configure(with: friendProp)
+    cell.configure(with: friendProp, by: indexPath, service: self.photoService)
     cell.backgroundColor = tableView.backgroundColor
     return cell
   }
