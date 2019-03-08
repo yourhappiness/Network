@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import Kingfisher
 
 class NewsfeedViewController: UITableViewController {
   
@@ -16,10 +17,11 @@ class NewsfeedViewController: UITableViewController {
   
     private let vkService = VKService()
     private var postNews: [NewsfeedCompatible]?
+    private var imageUrlStrings: [[String]?]?
+    private var imageUrls: [[URL]?]? = []
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
-    
   }
   
     override func viewDidLoad() {
@@ -32,6 +34,16 @@ class NewsfeedViewController: UITableViewController {
         }
         guard let news = news, let users = users, let groups = groups, let self = self else {return}
         self.postNews = news
+        self.imageUrlStrings = self.postNews?.map{$0.photos?.map{$0.photoURL}}
+        self.imageUrlStrings?.forEach{
+          let imageUrl = $0?.map{URL(string: $0)!}
+          self.imageUrls?.append(imageUrl)
+        }
+        self.imageUrls?.forEach{
+          guard let url = $0 else {return}
+          let prefetcher = ImagePrefetcher(urls: url)
+          prefetcher.start()
+        }
         DispatchQueue.main.async {
           do {
             let realm = try Realm()
@@ -59,10 +71,10 @@ class NewsfeedViewController: UITableViewController {
     }
   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let news = postNews else {return UITableViewCell()}
+        guard let news = postNews, let urls = self.imageUrls else {return UITableViewCell()}
         if let element = news[indexPath.row] as? NewsfeedPost {
           let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
-          cell.configure(with: element) { [weak self] in
+          cell.configure(with: element, using: urls[indexPath.row]) { [weak self] in
             guard let self = self else { return }
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
@@ -70,7 +82,7 @@ class NewsfeedViewController: UITableViewController {
           return cell
         } else if let element = news[indexPath.row] as? NewsfeedPhoto {
           let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPhotoCell", for: indexPath) as! NewsfeedPhotoCell
-          cell.configure(with: element)
+          cell.configure(with: element, using: urls[indexPath.row])
           return cell
         } else {
           return UITableViewCell()
@@ -138,3 +150,4 @@ class NewsfeedViewController: UITableViewController {
     */
 
 }
+

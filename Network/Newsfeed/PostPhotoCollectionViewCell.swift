@@ -22,9 +22,9 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
     postPhoto?.contentMode = .scaleAspectFill
   }
   
-  func configure(with photo: Photo) {
+  func configure(with url: URL) {
     awakeFromNib()
-    postPhoto?.kf.setImage(with: URL(string: photo.photoURL))
+    postPhoto?.kf.setImage(with: url)
   }
   
   override func prepareForReuse() {

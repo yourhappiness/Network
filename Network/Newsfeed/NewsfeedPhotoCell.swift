@@ -21,6 +21,7 @@ class NewsfeedPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollection
   var sourceUser: Results<User>?
   var sourceGroup: Results<Group>?
   var photos: [Photo]?
+  var photoUrls: [URL]?
   
   //MARK: - CollectionView
 
@@ -35,8 +36,8 @@ class NewsfeedPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollection
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostPhotoCell", for: indexPath) as! PostPhotoCollectionViewCell
-    guard let photos = self.photos else {return UICollectionViewCell()}
-    cell.configure(with: photos[indexPath.item])
+    guard let photoUrls = self.photoUrls else {return UICollectionViewCell()}
+    cell.configure(with: photoUrls[indexPath.item])
     return cell
   }
   
@@ -81,22 +82,25 @@ class NewsfeedPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollection
     self.photoCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
   }
   
-  func configure(with pieceOfNews: NewsfeedPhoto) {
+  func configure(with pieceOfNews: NewsfeedPhoto, using urls: [URL]?) {
     if pieceOfNews.sourceId > 0 {
       self.sourceUser = try? Realm().objects(User.self).filter("id = %@", pieceOfNews.sourceId)
       guard let sourceUser = self.sourceUser else {return}
       let source = Array(sourceUser)[0]
       self.sourceName.text = source.firstName + " " + source.lastName
+      self.sourcePhoto.kf.indicatorType = .activity
       self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
     } else if pieceOfNews.sourceId < 0 {
       self.sourceGroup = try? Realm().objects(Group.self).filter("id = %@", -pieceOfNews.sourceId)
       guard let sourceGroup = self.sourceGroup else {return}
       let source = Array(sourceGroup)[0]
       self.sourceName.text = source.name
+      self.sourcePhoto.kf.indicatorType = .activity
       self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
     }
     self.postTime.text = self.getTimePassed(from: pieceOfNews.postDate)
     self.photos = pieceOfNews.photos
+    self.photoUrls = urls
   }
   
   override func prepareForReuse() {
@@ -105,6 +109,7 @@ class NewsfeedPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollection
     sourcePhoto.image = nil
     postTime.text = nil
     photos = nil
+    photoUrls = nil
     photoCollectionView.reloadData()
   }
   

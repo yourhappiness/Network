@@ -12,6 +12,7 @@ class FriendPhotoCell: UICollectionViewCell {
   @IBOutlet weak var friendImage: PhotoView!
   
   public func configure(with photo: Photo) {
+    friendImage.containerView.kf.indicatorType = .activity
     friendImage.containerView.kf.setImage(with: URL(string: photo.photoURL))
     friendImage.containerView.backgroundColor = .black
   }

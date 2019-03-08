@@ -14,6 +14,7 @@ class GroupsCell: UITableViewCell {
   @IBOutlet weak var groupName: UILabel!
   
   public func configure(with group: Group) {
+    groupImage.kf.indicatorType = .activity
     groupImage.kf.setImage(with: URL(string: group.photoURL))
     groupName.text = group.name
   }

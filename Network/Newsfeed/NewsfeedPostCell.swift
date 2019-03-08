@@ -42,18 +42,20 @@ class NewsfeedPostCell: UITableViewCell {
     self.newsResponse.topAnchor.constraint(greaterThanOrEqualTo: self.sourcePhoto.bottomAnchor, constant: 15).isActive = true
   }
   
-  func configure(with pieceOfNews: NewsfeedPost, completion: @escaping () -> Void) {
+  func configure(with pieceOfNews: NewsfeedPost, using url: [URL]?, completion: @escaping () -> Void) {
     if pieceOfNews.sourceId > 0 {
       self.sourceUser = try? Realm().objects(User.self).filter("id = %@", pieceOfNews.sourceId)
       guard let sourceUser = self.sourceUser else {return}
       let source = Array(sourceUser)[0]
       self.sourceName.text = source.firstName + " " + source.lastName
+      self.sourcePhoto.kf.indicatorType = .activity
       self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
     } else if pieceOfNews.sourceId < 0 {
       self.sourceGroup = try? Realm().objects(Group.self).filter("id = %@", -pieceOfNews.sourceId)
       guard let sourceGroup = self.sourceGroup else {return}
       let source = Array(sourceGroup)[0]
       self.sourceName.text = source.name
+      self.sourcePhoto.kf.indicatorType = .activity
       self.sourcePhoto.kf.setImage(with: URL(string: source.photoURL))
     }
     self.postTime.text = self.getTimePassed(from: pieceOfNews.postDate)
@@ -63,31 +65,17 @@ class NewsfeedPostCell: UITableViewCell {
       textHeightConstraint.isActive = true
     } else {
       self.postText.text = pieceOfNews.postText
-      self.postText.sizeToFit()
-      if self.postText.frame.height > 100 {
-        self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 100)
-        self.postText.isScrollEnabled = true
-        self.postText.flashScrollIndicators()
-      } else {
-        self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: self.postText.frame.height)
-      }
-      self.postText.setNeedsLayout()
-      self.postText.layoutIfNeeded()
+      self.setTextConstraints()
     }
     self.postText.backgroundColor = .clear
     self.photos = pieceOfNews.photos
-    if let photo = self.photos?[0] {
-      self.postPhoto.kf.setImage(with: URL(string: photo.photoURL)) { _ in
+    if let photoUrl = url?[0] {
+      self.postPhoto.kf.indicatorType = .activity
+      self.postPhoto.kf.setImage(with: photoUrl) { _ in
         completion()
       }
-      self.postPhoto.frame = CGRect(x: self.postPhoto.frame.minX, y: self.postPhoto.frame.minY, width: self.frame.width - 20, height: (self.frame.width - 20) * CGFloat(photo.height/photo.width))
-      imageHeightConstraint = self.postPhoto.heightAnchor.constraint(equalTo: self.postPhoto.widthAnchor
-        , multiplier: CGFloat(photo.height/photo.width))
-      imageHeightConstraint.isActive = true
-    } else {
-      imageHeightConstraint = self.postPhoto.heightAnchor.constraint(equalToConstant: 0)
-      imageHeightConstraint.isActive = true
-    }
+    } 
+    self.setPhotoConstraints()
     self.newsLikes.numberOfLikes = pieceOfNews.numberOfLikes
     self.commentsNumber.text = String(pieceOfNews.commentsNumber)
     self.sharesNumber.text = String(pieceOfNews.sharesNumber)
@@ -135,5 +123,30 @@ class NewsfeedPostCell: UITableViewCell {
       strDate = "\(Int(round(timeInterval))) seconds ago"
     }
     return strDate
+  }
+  
+  func setPhotoConstraints() {
+    if let photo = self.photos?[0] {
+      self.postPhoto.frame = CGRect(x: self.postPhoto.frame.minX, y: self.postPhoto.frame.minY, width: self.frame.width - 20, height: (self.frame.width - 20) * CGFloat(photo.height/photo.width))
+      imageHeightConstraint = self.postPhoto.heightAnchor.constraint(equalTo: self.postPhoto.widthAnchor
+        , multiplier: CGFloat(photo.height/photo.width))
+      imageHeightConstraint.isActive = true
+    } else {
+      imageHeightConstraint = self.postPhoto.heightAnchor.constraint(equalToConstant: 0)
+      imageHeightConstraint.isActive = true
+    }
+  }
+  
+  func setTextConstraints() {
+    self.postText.sizeToFit()
+    if self.postText.frame.height > 100 {
+      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: 100)
+      self.postText.isScrollEnabled = true
+      self.postText.flashScrollIndicators()
+    } else {
+      self.postText.frame = CGRect(x: self.postText.frame.minX, y: self.postText.frame.minY, width: self.frame.width - 24, height: self.postText.frame.height)
+    }
+    self.postText.setNeedsLayout()
+    self.postText.layoutIfNeeded()
   }
 }

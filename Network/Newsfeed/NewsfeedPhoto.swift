@@ -21,7 +21,7 @@ final class NewsfeedPhoto: NewsfeedCompatible {
   
   var sourceId: Int
   var postDate: Double
-  var photos: [Photo]
+  var photos: [Photo]?
   
   init (json: JSON) {
     self.sourceId = json["source_id"].intValue
