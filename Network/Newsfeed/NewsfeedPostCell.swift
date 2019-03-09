@@ -42,7 +42,7 @@ class NewsfeedPostCell: UITableViewCell {
     self.newsResponse.topAnchor.constraint(greaterThanOrEqualTo: self.sourcePhoto.bottomAnchor, constant: 15).isActive = true
   }
   
-  func configure(with pieceOfNews: NewsfeedPost, using url: [URL]?, completion: @escaping () -> Void) {
+  func configure(with pieceOfNews: NewsfeedPost, using url: [URL]?) {
     if pieceOfNews.sourceId > 0 {
       self.sourceUser = try? Realm().objects(User.self).filter("id = %@", pieceOfNews.sourceId)
       guard let sourceUser = self.sourceUser else {return}
@@ -71,9 +71,7 @@ class NewsfeedPostCell: UITableViewCell {
     self.photos = pieceOfNews.photos
     if let photoUrl = url?[0] {
       self.postPhoto.kf.indicatorType = .activity
-      self.postPhoto.kf.setImage(with: photoUrl) { _ in
-        completion()
-      }
+      self.postPhoto.kf.setImage(with: photoUrl)
     } 
     self.setPhotoConstraints()
     self.newsLikes.numberOfLikes = pieceOfNews.numberOfLikes

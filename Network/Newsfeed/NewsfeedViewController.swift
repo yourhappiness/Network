@@ -10,15 +10,16 @@ import UIKit
 import RealmSwift
 import Kingfisher
 
-class NewsfeedViewController: UITableViewController {
+class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
   
 //    var tapGestureRecognizer = UITapGestureRecognizer()
 //    var longPressRecognizer = UILongPressGestureRecognizer()
   
     private let vkService = VKService()
     private var postNews: [NewsfeedCompatible]?
-    private var imageUrlStrings: [[String]?]?
     private var imageUrls: [[URL]?]? = []
+    private var newIndexes: [IndexPath] = []
+    private var newsIsLoading = false
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
@@ -26,6 +27,7 @@ class NewsfeedViewController: UITableViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.prefetchDataSource = self
       //запрос новостей
       vkService.getNews() { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?) in
         if let error = error {
@@ -34,16 +36,9 @@ class NewsfeedViewController: UITableViewController {
         }
         guard let news = news, let users = users, let groups = groups, let self = self else {return}
         self.postNews = news
-        self.imageUrlStrings = self.postNews?.map{$0.photos?.map{$0.photoURL}}
-        self.imageUrlStrings?.forEach{
-          let imageUrl = $0?.map{URL(string: $0)!}
-          self.imageUrls?.append(imageUrl)
-        }
-        self.imageUrls?.forEach{
-          guard let url = $0 else {return}
-          let prefetcher = ImagePrefetcher(urls: url)
-          prefetcher.start()
-        }
+        let imageUrlStrings: [[String]?]? = self.postNews?.map{$0.photos?.map{$0.photoURL}}
+        self.imageUrls = self.getUrlsFromStrings(strings: imageUrlStrings)
+        self.startDownload(for: self.imageUrls)
         DispatchQueue.main.async {
           do {
             let realm = try Realm()
@@ -74,11 +69,7 @@ class NewsfeedViewController: UITableViewController {
         guard let news = postNews, let urls = self.imageUrls else {return UITableViewCell()}
         if let element = news[indexPath.row] as? NewsfeedPost {
           let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
-          cell.configure(with: element, using: urls[indexPath.row]) { [weak self] in
-            guard let self = self else { return }
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-          }
+          cell.configure(with: element, using: urls[indexPath.row])
           return cell
         } else if let element = news[indexPath.row] as? NewsfeedPhoto {
           let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPhotoCell", for: indexPath) as! NewsfeedPhotoCell
@@ -91,6 +82,61 @@ class NewsfeedViewController: UITableViewController {
 //        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(animatePhotoWithPress(_:)))
 //        cell.newsPhoto.addGestureRecognizer(tapGestureRecognizer)
 //        cell.newsPhoto.addGestureRecognizer(longPressRecognizer)
+    }
+  
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+      guard scrollView.isDragging else {return}
+      let currentOffset = scrollView.contentOffset.y
+      let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+      let deltaOffset = maximumOffset - currentOffset
+      
+      if deltaOffset <= 0 {
+        loadMore()
+      }
+    }
+  
+    func loadMore() {
+      guard !newsIsLoading else {return}
+        newsIsLoading = true
+        vkService.getNews() { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?) in
+          if let error = error {
+            self?.showAlert(error: error)
+            return
+          }
+          guard let news = news, let users = users, let groups = groups, let self = self, let postNews = self.postNews, let imageUrls = self.imageUrls else {return}
+          var i: Int = 0
+          DispatchQueue.global().sync {
+            news.forEach {_ in
+              self.newIndexes.append(IndexPath(row: postNews.count + i, section: 0))
+              i += 1
+            }
+          }
+          self.postNews = postNews + news
+          let newImageUrlStrings = news.map{$0.photos?.map{$0.photoURL}}
+          let newImageUrls = self.getUrlsFromStrings(strings: newImageUrlStrings)
+          self.startDownload(for: newImageUrls)
+          self.imageUrls = imageUrls + newImageUrls
+          DispatchQueue.main.async {
+            do {
+              let realm = try Realm()
+              try realm.write {
+                realm.add(users, update: true)
+                realm.add(groups, update: true)
+              }
+            } catch {
+              self.showAlert(error: error)
+            }
+            self.tableView.insertRows(at: self.newIndexes, with: .automatic)
+            self.tableView.scrollToRow(at: IndexPath(row: postNews.count - 1, section: 0), at: .bottom, animated: false)
+//            self.tableView.reloadData()
+            self.newsIsLoading = false
+            self.newIndexes.removeAll()
+          }
+        }
+      }
+  
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+      //TODO
     }
   
   @objc func animatePhotoWithTap(_ tapGestureRecognizer: UITapGestureRecognizer) {
@@ -139,6 +185,24 @@ class NewsfeedViewController: UITableViewController {
     view.layer.add(animationOut, forKey: nil)
   }
 
+  private func getUrlsFromStrings(strings: [[String]?]?) -> [[URL]?] {
+    var urls: [[URL]?] = []
+    strings?.forEach{
+      let url = $0?.map{URL(string: $0)!}
+      urls.append(url)
+    }
+    return urls
+  }
+  
+  private func startDownload(for array: [[URL]?]?) {
+    guard let array = array else {return}
+    array.forEach{
+      guard let url = $0 else {return}
+      let prefetcher = ImagePrefetcher(urls: url)
+      prefetcher.start()
+    }
+  }
+  
     /*
     // MARK: - Navigation
 
