@@ -63,7 +63,9 @@ class PhotoService {
         let data = response.data,
         let image = UIImage(data: data),
         let self = self else {return}
-      self.images[url] = image
+      DispatchQueue.main.async {
+        self.images[url] = image
+      }
       self.saveImageToCache(url: url, image: image)
       DispatchQueue.main.async {
         self.container.reloadRow(at: indexPath)

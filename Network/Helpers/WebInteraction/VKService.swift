@@ -162,7 +162,7 @@ class VKService {
       parameters = [
         "filters": "post,photo",
         "max_photos": "10",
-        "start_from": Session.instance.nextFrom as Any,
+        "start_from": Session.instance.nextFrom!,
         "count": "20",
         "access_token": Session.instance.token,
         "v": "5.92"

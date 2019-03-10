@@ -128,7 +128,6 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
             }
             self.tableView.insertRows(at: self.newIndexes, with: .automatic)
             self.tableView.scrollToRow(at: IndexPath(row: postNews.count - 1, section: 0), at: .bottom, animated: false)
-//            self.tableView.reloadData()
             self.newsIsLoading = false
             self.newIndexes.removeAll()
           }
