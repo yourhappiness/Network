@@ -20,6 +20,8 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     private var imageUrls: [[URL]?]? = []
     private var newIndexes: [IndexPath] = []
     private var newsIsLoading = false
+    //array for cells heights
+    private var cellHeights: [IndexPath : CGFloat] = [:]
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
@@ -27,7 +29,8 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.prefetchDataSource = self
+        self.tableView.register(NewsfeedCellCalculatedLayout.self, forCellReuseIdentifier: NewsfeedCellCalculatedLayout.reuseId)
+//        self.tableView.prefetchDataSource = self
       //запрос новостей
       vkService.getNews() { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?) in
         if let error = error {
@@ -64,24 +67,46 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.postNews?.count ?? 0
     }
+
   
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let news = postNews, let urls = self.imageUrls else {return UITableViewCell()}
-        if let element = news[indexPath.row] as? NewsfeedPost {
-          let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
-          cell.configure(with: element, using: urls[indexPath.row])
-          return cell
-        } else if let element = news[indexPath.row] as? NewsfeedPhoto {
-          let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPhotoCell", for: indexPath) as! NewsfeedPhotoCell
-          cell.configure(with: element, using: urls[indexPath.row])
-          return cell
-        } else {
-          return UITableViewCell()
-        }
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        guard let news = postNews, let urls = self.imageUrls else {return UITableViewCell()}
+//        if let element = news[indexPath.row] as? NewsfeedPost {
+//          let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPostCell", for: indexPath) as! NewsfeedPostCell
+//          cell.configure(with: element, using: urls[indexPath.row])
+//          return cell
+//        } else if let element = news[indexPath.row] as? NewsfeedPhoto {
+//          let cell = tableView.dequeueReusableCell(withIdentifier: "NewsfeedPhotoCell", for: indexPath) as! NewsfeedPhotoCell
+//          cell.configure(with: element, using: urls[indexPath.row])
+//          return cell
+//        } else {
+//          return UITableViewCell()
+//        }
 //        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(animatePhotoWithTap(_:)))
 //        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(animatePhotoWithPress(_:)))
 //        cell.newsPhoto.addGestureRecognizer(tapGestureRecognizer)
 //        cell.newsPhoto.addGestureRecognizer(longPressRecognizer)
+//    }
+  
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      guard let news = postNews, let urls = self.imageUrls else {return UITableViewCell()}
+      let cell = tableView.dequeueReusableCell(withIdentifier: NewsfeedCellCalculatedLayout.reuseId, for: indexPath) as! NewsfeedCellCalculatedLayout
+      let postTime: String = getTimePassed(from: news[indexPath.row].postDate)
+      cell.configure(with: news[indexPath.row], postTime: postTime, using: urls[indexPath.row], for: self.view.frame.width)
+      cell.backgroundColor = tableView.backgroundColor
+      if cellHeights[indexPath] == nil {
+        cellHeights[indexPath] = cell.cellHeight
+      }
+      self.tableView.rowHeight = cellHeights[indexPath] ?? UITableView.automaticDimension
+      return cell
+    }
+  
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+      //TODO
+    }
+  
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      tableView.deselectRow(at: indexPath, animated: false)
     }
   
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -134,8 +159,22 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
         }
       }
   
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-      //TODO
+    private func getTimePassed(from time: Double) -> String {
+      let date = Date(timeIntervalSince1970: time)
+      let timeInterval = Date().timeIntervalSince(date)
+      let strDate: String
+      if timeInterval >= 2592000 {
+        strDate = "\(Int(round(timeInterval/2592000))) months ago"
+      } else if timeInterval >= 86400 {
+        strDate = "\(Int(round(timeInterval/86400))) days ago"
+      } else if timeInterval >= 3600 {
+        strDate = "\(Int(round(timeInterval/3600))) hours ago"
+      } else if timeInterval >= 60 {
+        strDate = "\(Int(round(timeInterval/60))) minutes ago"
+      } else {
+        strDate = "\(Int(round(timeInterval))) seconds ago"
+      }
+      return strDate
     }
   
   @objc func animatePhotoWithTap(_ tapGestureRecognizer: UITapGestureRecognizer) {

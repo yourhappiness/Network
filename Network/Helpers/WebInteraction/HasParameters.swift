@@ -14,5 +14,7 @@ protocol HasParameters: class {
   static var path: String {get}
   static var parameters: Parameters {get}
   
+  var photoURL: String {get set}
+  
   static func parseJSON(json: JSON) -> Self
 }

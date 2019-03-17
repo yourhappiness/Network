@@ -39,16 +39,17 @@ import UIKit
       self.likeCount.textColor = UIColor.black
     }
     likeButton.draw(CGRect(origin: .zero, size: CGSize(width: 38, height: 25)))
+    likeButton.frame = CGRect(origin: .zero, size: CGSize(width: 38, height: 25))
     likeView.append(likeButton)
     likeCount.text = String(numberOfLikes)
     likeCount.textAlignment = .left
+    likeCount.font = UIFont.systemFont(ofSize: 15)
     likeView.append(likeCount)
-    likeCount.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 10)
-//    likeButton.addTarget(self, action: #selector(updateLikes(_:)), for: .touchUpInside)
     stackView = UIStackView(arrangedSubviews: likeView)
     self.addSubview(stackView)
     stackView.axis = .horizontal
     stackView.alignment = .center
+    self.layoutSubviews()
   }
   
   func updateView() {
@@ -63,6 +64,7 @@ import UIKit
     }
     likeButton.setNeedsDisplay()
     likeCount.text = String(numberOfLikes)
+    self.layoutSubviews()
   }
   
   @objc public func updateLikes() {
@@ -77,6 +79,7 @@ import UIKit
       })
       self.likeCount.textColor = UIColor.black
       isLiked = false
+      self.layoutSubviews()
       return
     }
 //    self.numberOfLikes += 1
@@ -87,14 +90,53 @@ import UIKit
       self.likeCount.text = String(self.numberOfLikes)
     })
     self.likeCount.textColor = UIColor.red
+    self.layoutSubviews()
     isLiked = true
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    stackView.frame = CGRect(x: 10, y: 0, width: 65, height: 22)
+    setLikeCountFrame()
+    setStackViewFrame()
+    setOwnFrame()
   }
-
+  
+  private func getLabelSize(text: String, font: UIFont) -> CGSize {
+    let maxWidth: CGFloat = 100
+    let textblock = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
+    
+    let rect = text.boundingRect(with: textblock,
+                                 options: .usesLineFragmentOrigin,
+                                 attributes: [NSAttributedString.Key.font : font],
+                                 context: nil)
+    
+    let width = rect.size.width.rounded(.up)
+    let height = rect.size.height.rounded(.up)
+    
+    return CGSize(width: width, height: height)
+  }
+  
+  private func setLikeCountFrame() {
+    guard let likeCountText = likeCount.text else {return}
+    let likeCountSize = getLabelSize(text: likeCountText, font: likeCount.font)
+    let likeCountX = self.likeButton.frame.maxX + 10
+    let likeCountOrigin = CGPoint(x: likeCountX, y: likeCount.frame.minY)
+    likeCount.frame = CGRect(origin: likeCountOrigin, size: likeCountSize)
+  }
+  
+  private func setStackViewFrame() {
+    let stackViewWidth = self.likeButton.frame.width + self.likeCount.frame.width + 10
+    let stackViewHeight = max(self.likeButton.frame.height, self.likeCount.frame.height)
+    let stackViewSize = CGSize(width: stackViewWidth, height: stackViewHeight)
+    stackView.frame = CGRect(origin: .zero, size: stackViewSize)
+  }
+  
+  private func setOwnFrame() {
+    let width = stackView.frame.width
+    let height = stackView.frame.height
+    let size = CGSize(width: width, height: height)
+    self.frame = CGRect(origin: self.frame.origin, size: size)
+  }
 }
 
 class LikeButton: UIButton {

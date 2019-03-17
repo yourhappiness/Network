@@ -12,12 +12,14 @@ import RealmSwift
 class GroupsViewController: UITableViewController {
   
   private let vkService = VKService()
+  private var photoService: PhotoService?
   private var userGroups: Results<Group>? = DatabaseService.loadVKData(type: Group.self)
   private var notificationToken: NotificationToken?
 
     override func viewDidLoad() {
       super.viewDidLoad()
       tableView.rowHeight = 48
+      photoService = PhotoService(container: self.tableView)
     
       notificationToken = userGroups?.observe { [weak self] changes in
         guard let self = self else {return}
@@ -73,7 +75,7 @@ class GroupsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCell(withIdentifier: "GroupsCell", for: indexPath) as! GroupsCell
       guard let userGroups = userGroups else {return UITableViewCell()}
-      cell.configure(with: userGroups[indexPath.row])
+      cell.configure(with: userGroups[indexPath.row], by: indexPath, service: photoService)
       return cell
     }
   

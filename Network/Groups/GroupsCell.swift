@@ -13,9 +13,8 @@ class GroupsCell: UITableViewCell {
   @IBOutlet weak var groupImage: UIImageView!
   @IBOutlet weak var groupName: UILabel!
   
-  public func configure(with group: Group) {
-    groupImage.kf.indicatorType = .activity
-    groupImage.kf.setImage(with: URL(string: group.photoURL))
+  public func configure(with group: Group, by indexPath: IndexPath, service: PhotoService?) {
+    groupImage.image = service?.photo(atIndexpath: indexPath, byURL: group.photoURL)
     groupName.text = group.name
   }
 

@@ -11,6 +11,8 @@ import Alamofire
 import SwiftyJSON
 
 protocol NewsfeedCompatible: class {
+  var sourceId: Int {get set}
+  var postDate: Double {get set}
   var photos: [Photo]? {get set}
   static func parseJSON(json: JSON) -> Self
 }

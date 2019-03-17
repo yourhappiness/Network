@@ -23,6 +23,7 @@
 		700CA06C219AA29A00FE447E /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700CA06B219AA29A00FE447E /* LikeControl.swift */; };
 		700D039A21C6DA0400D310BB /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700D039921C6DA0400D310BB /* Session.swift */; };
 		700D1B5121A1FF8500CB729C /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700D1B5021A1FF8500CB729C /* PanGestureRecognizer.swift */; };
+		700E70B72236EA5C00BCF92A /* NewsfeedCellCalculatedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700E70B62236EA5C00BCF92A /* NewsfeedCellCalculatedLayout.swift */; };
 		700ED95721A5E8CF00F58EA3 /* NewsfeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700ED95621A5E8CF00F58EA3 /* NewsfeedViewController.swift */; };
 		700ED95921A5E91800F58EA3 /* NewsfeedPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700ED95821A5E91800F58EA3 /* NewsfeedPostCell.swift */; };
 		700ED95B21A5EA4800F58EA3 /* NewsfeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700ED95A21A5EA4800F58EA3 /* NewsfeedPost.swift */; };
@@ -53,6 +54,7 @@
 		70B6F48E21974E990041D1AC /* Network.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 70B6F48C21974E990041D1AC /* Network.xcdatamodeld */; };
 		70BCACA8220CFC1800CE01CE /* RealmChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BCACA7220CFC1800CE01CE /* RealmChanges.swift */; };
 		70BF9ADF21B34D3D00388EB1 /* PushAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BF9ADE21B34D3D00388EB1 /* PushAnimator.swift */; };
+		70C6882022357B710021067C /* FriendsCellCalculatedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C6881F22357B710021067C /* FriendsCellCalculatedLayout.swift */; };
 		70CA306321E0FC81005D3392 /* HasParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CA306221E0FC81005D3392 /* HasParameters.swift */; };
 		70ED401E21D1F96400467C1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70ED401D21D1F96400467C1B /* User.swift */; };
 		8BDE89DBAD8671BAB6E4D903 /* Pods_Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8335D01F8A10DA76627775 /* Pods_Network.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -96,6 +98,7 @@
 		700CA06B219AA29A00FE447E /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
 		700D039921C6DA0400D310BB /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		700D1B5021A1FF8500CB729C /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		700E70B62236EA5C00BCF92A /* NewsfeedCellCalculatedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedCellCalculatedLayout.swift; sourceTree = "<group>"; };
 		700ED95621A5E8CF00F58EA3 /* NewsfeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedViewController.swift; sourceTree = "<group>"; };
 		700ED95821A5E91800F58EA3 /* NewsfeedPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedPostCell.swift; sourceTree = "<group>"; };
 		700ED95A21A5EA4800F58EA3 /* NewsfeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedPost.swift; sourceTree = "<group>"; };
@@ -132,6 +135,7 @@
 		70B6F48D21974E990041D1AC /* Network.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Network.xcdatamodel; sourceTree = "<group>"; };
 		70BCACA7220CFC1800CE01CE /* RealmChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmChanges.swift; sourceTree = "<group>"; };
 		70BF9ADE21B34D3D00388EB1 /* PushAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAnimator.swift; sourceTree = "<group>"; };
+		70C6881F22357B710021067C /* FriendsCellCalculatedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCellCalculatedLayout.swift; sourceTree = "<group>"; };
 		70CA306221E0FC81005D3392 /* HasParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasParameters.swift; sourceTree = "<group>"; };
 		70ED401D21D1F96400467C1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		83CC69FEDC4E0139C012A2C8 /* Pods-Network.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Network.release.xcconfig"; path = "Pods/Target Support Files/Pods-Network/Pods-Network.release.xcconfig"; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 				700B2E9322228995002238E3 /* NewsfeedPhotoCell.swift */,
 				700B2E9522228CC0002238E3 /* NewsfeedPhoto.swift */,
 				7028BE2D22273594009ED355 /* PostPhotoCollectionViewCell.swift */,
+				700E70B62236EA5C00BCF92A /* NewsfeedCellCalculatedLayout.swift */,
 			);
 			path = Newsfeed;
 			sourceTree = "<group>";
@@ -287,6 +292,7 @@
 				700D1B5021A1FF8500CB729C /* PanGestureRecognizer.swift */,
 				700BF59A21A490FD00E05F90 /* FriendsHeaderView.swift */,
 				700BF5A121A4B5D500E05F90 /* FriendsHeader.xib */,
+				70C6881F22357B710021067C /* FriendsCellCalculatedLayout.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -619,6 +625,7 @@
 				70B6F48E21974E990041D1AC /* Network.xcdatamodeld in Sources */,
 				700C058621B4195E000F929A /* InteractiveTransition.swift in Sources */,
 				70BCACA8220CFC1800CE01CE /* RealmChanges.swift in Sources */,
+				700E70B72236EA5C00BCF92A /* NewsfeedCellCalculatedLayout.swift in Sources */,
 				703A7F1621971F0B0005A43F /* AllGroupsViewController.swift in Sources */,
 				70AB133E219CC94700E87CA6 /* SearchForFriend.swift in Sources */,
 				700D1B5121A1FF8500CB729C /* PanGestureRecognizer.swift in Sources */,
@@ -642,6 +649,7 @@
 				70BF9ADF21B34D3D00388EB1 /* PushAnimator.swift in Sources */,
 				700D039A21C6DA0400D310BB /* Session.swift in Sources */,
 				701194B8223073D900CB79BB /* DataReloadable.swift in Sources */,
+				70C6882022357B710021067C /* FriendsCellCalculatedLayout.swift in Sources */,
 				70143C1C21A9F5E2005918BC /* ActivityIndicatorView.swift in Sources */,
 				700A1B0F21B5D974004C68EE /* UnwindAnimatedPhotoSegue.swift in Sources */,
 				700BF59B21A490FD00E05F90 /* FriendsHeaderView.swift in Sources */,
