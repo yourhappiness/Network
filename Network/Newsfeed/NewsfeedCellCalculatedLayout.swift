@@ -161,23 +161,31 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
     sourceName.backgroundColor = self.backgroundColor
     setPostTimeFrame()
     postTime.backgroundColor = self.backgroundColor
-    self.cellHeight = yOffsetForSourcePhoto + sourcePhoto.frame.height
+    DispatchQueue.global().sync {
+      self.cellHeight = yOffsetForSourcePhoto + sourcePhoto.frame.height
+    }
     //layout postText
     if self.postText != nil {
       setPostTextFrame()
-      self.cellHeight = self.cellHeight + ySpaceBetweenElements + postText!.frame.height + ySpaceBetweenElements
+      DispatchQueue.global().sync {
+        self.cellHeight = self.cellHeight + ySpaceBetweenElements + postText!.frame.height + ySpaceBetweenElements
+      }
     }
     //layout CollectionView
     if self.postPhotosCollectionView != nil {
       self.setPostPhotosCollectionViewFrame()
-      self.cellHeight = self.cellHeight + ySpaceBetweenElements + postPhotosCollectionView!.frame.height + ySpaceBetweenElements
+      DispatchQueue.global().sync {
+        self.cellHeight = self.cellHeight + ySpaceBetweenElements + postPhotosCollectionView!.frame.height + ySpaceBetweenElements
+      }
     }
     //layout newsResponse
     if self.newsResponse != nil {
       setNewsResponseFrame()
       self.commentsNumber?.backgroundColor = self.backgroundColor
       self.sharesNumber?.backgroundColor = self.backgroundColor
-      self.cellHeight = self.cellHeight + ySpaceBetweenElements + self.newsResponse!.frame.height
+      DispatchQueue.global().sync {
+        self.cellHeight = self.cellHeight + ySpaceBetweenElements + self.newsResponse!.frame.height
+      }
     }
     //layout viewsControl
     
@@ -267,10 +275,14 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
     
     sharesNumber?.frame = CGRect(origin: sharesNumberOrigin, size: sharesNumberSize)
     
+    var width: CGFloat = 0
+    var height: CGFloat = 0
+    DispatchQueue.global().sync {
     let commentsWidth = commentButton!.frame.width + commentsNumber!.frame.width
     let shareWidth = shareButton!.frame.width + sharesNumber!.frame.width
-    let width = newsLikesControl!.frame.width + newsResponseSpaceBetweenElements * 6 + commentsWidth + shareWidth
-    let height = max(newsLikesControl!.frame.height, commentButton!.frame.height, commentsNumber!.frame.height, shareButton!.frame.height, sharesNumber!.frame.height)
+    width = newsLikesControl!.frame.width + newsResponseSpaceBetweenElements * 6 + commentsWidth + shareWidth
+    height = max(newsLikesControl!.frame.height, commentButton!.frame.height, commentsNumber!.frame.height, shareButton!.frame.height, sharesNumber!.frame.height)
+    }
     let size = CGSize(width: width, height: height)
     var y: CGFloat
     if self.postText != nil {
