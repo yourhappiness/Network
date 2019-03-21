@@ -19,7 +19,7 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
     postPhoto?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     postPhoto?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     postPhoto?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-    postPhoto?.contentMode = .scaleAspectFill
+    postPhoto?.contentMode = .scaleAspectFit
   }
   
   func configure(with url: URL) {
