@@ -26,7 +26,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   private var postText: UITextView? = nil
   private var postPhotosCollectionView: UICollectionView? = nil
   private var newsResponse: UIView? = nil
-  private var newsViewsControl: UIView? = nil
+  private var newsViewsControl: UIStackView? = nil
   //Response views
   private var newsLikesControl: LikeControl? = nil
   private var commentButton: UIButton? = nil
@@ -34,14 +34,14 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   private var shareButton: UIButton? = nil
   private var sharesNumber: UILabel? = nil
   //NewsViews views
-  private var newsViewsImage: UIImageView? = nil
+  private var newsViewsImageView: UIImageView? = nil
   private var newsViewsNumber: UILabel? = nil
   
   //MARK: - Privates
   private var photos: [Photo]?
   private var photoUrls: [URL]?
   private let sourcePhotoWidth: CGFloat = 50
-  private let xOffsetForSourcePhotoAndPostText: CGFloat = 12
+  private let xOffsetFromCellEdge: CGFloat = 12
   private let yOffsetForSourcePhoto: CGFloat = 4
   private let sourceNameLeftOffset: CGFloat = 18
   private let sourceNameRightOffset: CGFloat = 12
@@ -50,7 +50,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   private let ySpaceBetweenElements: CGFloat = 15
   private let xOffsetForPostPhotos: CGFloat = 10
   private var postPhotosOriginY: CGFloat = 0
-  private var newsResponseSpaceBetweenElements:CGFloat = 5
+  private var newsResponseNewsViewsSpaceBetweenElements:CGFloat = 5
   private var screenWidth: CGFloat = 0
   
   //MARK: - Cell size
@@ -146,10 +146,27 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
       commentsNumber?.centerYAnchor.constraint(equalTo: newsResponse!.centerYAnchor).isActive = true
       shareButton?.centerYAnchor.constraint(equalTo: newsResponse!.centerYAnchor).isActive = true
       sharesNumber?.centerYAnchor.constraint(equalTo: newsResponse!.centerYAnchor).isActive = true
-      
-      
+      //add and setup newsViewsControl
+      newsViewsControl = UIStackView(frame: .zero)
+      newsViewsControl?.alignment = .center
+      newsViewsControl?.distribution = .fill
+      newsViewsControl?.spacing = 5
+      newsViewsControl?.axis = .horizontal
+      self.contentView.addSubview(newsViewsControl!)
+      let newsViewsImage = UIImage(named: "View")
+      newsViewsImageView = UIImageView(frame: .zero)
+      newsViewsImageView?.image = newsViewsImage
+      newsViewsImageView?.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+      newsViewsNumber = UILabel(frame: .zero)
+      newsViewsNumber?.font = UIFont.systemFont(ofSize: 15)
+      newsViewsNumber?.textColor = .yellow
+      newsViewsNumber?.numberOfLines = 0
+      newsViewsNumber?.text = String(element.numberOfViews)
+      newsViewsNumber?.setContentCompressionResistancePriority(.required, for: .horizontal)
+      newsViewsControl?.addArrangedSubview(newsViewsImageView!)
+      newsViewsControl?.addArrangedSubview(newsViewsNumber!)
     }
-    self.layoutSubviews()
+    self.layoutIfNeeded()
   }
 
   //MARK: - Layout
@@ -188,8 +205,10 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
       }
     }
     //layout viewsControl
-    
-    
+    if self.newsViewsControl != nil {
+      setNewsViewsFrame()
+      self.newsViewsNumber?.backgroundColor = self.backgroundColor
+    }
     //set contentSize
     let contentViewSize = CGSize(width: self.contentView.frame.width, height: cellHeight)
     self.contentView.frame = CGRect(origin: contentView.frame.origin, size: contentViewSize)
@@ -197,7 +216,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   
   private func setSourcePhotoFrame() {
     let sourcePhotoSize = CGSize(width: sourcePhotoWidth, height: sourcePhotoWidth)
-    let sourcePhotoOrigin = CGPoint(x: self.contentView.bounds.minX + xOffsetForSourcePhotoAndPostText, y: self.contentView.bounds.minY + yOffsetForSourcePhoto)
+    let sourcePhotoOrigin = CGPoint(x: self.contentView.bounds.minX + xOffsetFromCellEdge, y: self.contentView.bounds.minY + yOffsetForSourcePhoto)
     sourcePhoto.frame = CGRect(origin: sourcePhotoOrigin, size: sourcePhotoSize)
   }
   
@@ -221,12 +240,12 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   }
   
   private func setPostTextFrame() {
-    var postTextSize = postText!.sizeThatFits(CGSize(width: screenWidth - xOffsetForSourcePhotoAndPostText * 2, height: .greatestFiniteMagnitude))
+    var postTextSize = postText!.sizeThatFits(CGSize(width: screenWidth - xOffsetFromCellEdge * 2, height: .greatestFiniteMagnitude))
     if postTextSize.height > 100 {
       postTextSize = CGSize(width: postTextSize.width, height: 100)
       postText?.isScrollEnabled = true
     }
-    let postTextX = self.contentView.bounds.minX + xOffsetForSourcePhotoAndPostText
+    let postTextX = self.contentView.bounds.minX + xOffsetFromCellEdge
     let postTextY = sourcePhoto.frame.maxY + ySpaceBetweenElements
     let postTextOrigin = CGPoint(x: postTextX, y: postTextY)
     
@@ -250,28 +269,28 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   private func setNewsResponseFrame() {
     self.newsLikesControl?.setupView()
     let newsLikesControlSize = CGSize(width: newsLikesControl!.frame.width, height: 22)
-    let newsLikesControlOrigin = CGPoint(x: xOffsetForSourcePhotoAndPostText + newsResponseSpaceBetweenElements, y: newsLikesControl!.frame.minY)
+    let newsLikesControlOrigin = CGPoint(x: xOffsetFromCellEdge + newsResponseNewsViewsSpaceBetweenElements, y: newsLikesControl!.frame.minY)
     self.newsLikesControl?.frame = CGRect(origin: newsLikesControlOrigin, size: newsLikesControlSize)
     
     let commentButtonSize = CGSize(width: 22, height: 22)
-    let commentButtonOrigin = CGPoint(x: newsLikesControl!.frame.maxX + newsResponseSpaceBetweenElements, y: commentButton!.frame.minY)
+    let commentButtonOrigin = CGPoint(x: newsLikesControl!.frame.maxX + newsResponseNewsViewsSpaceBetweenElements, y: commentButton!.frame.minY)
     self.commentButton?.frame = CGRect(origin: commentButtonOrigin, size: commentButtonSize)
     
     guard let commentsNumberText = commentsNumber!.text else {return}
     let commentsNumberSize = self.getLabelSize(text: commentsNumberText, font: commentsNumber!.font)
-    let commentsNumberX = commentButton!.frame.maxX + newsResponseSpaceBetweenElements
+    let commentsNumberX = commentButton!.frame.maxX + newsResponseNewsViewsSpaceBetweenElements
     let commentsNumberOrigin = CGPoint(x: commentsNumberX, y: commentsNumber!.frame.minY)
     
     commentsNumber?.frame = CGRect(origin: commentsNumberOrigin, size: commentsNumberSize)
     
     let shareButtonSize = CGSize(width: 28, height: 28)
-    let shareButtonOrigin = CGPoint(x: commentsNumber!.frame.maxX + newsResponseSpaceBetweenElements, y: shareButton!.frame.minY)
+    let shareButtonOrigin = CGPoint(x: commentsNumber!.frame.maxX + newsResponseNewsViewsSpaceBetweenElements, y: shareButton!.frame.minY)
     self.shareButton?.frame = CGRect(origin: shareButtonOrigin, size: shareButtonSize)
     
     guard let sharesNumberText = sharesNumber!.text else {return}
     let sharesNumberSize = self.getLabelSize(text: sharesNumberText, font: sharesNumber!.font)
-    let sharesNumberX = shareButton!.frame.maxX + newsResponseSpaceBetweenElements
-    let sharesNumberOrigin = CGPoint(x: sharesNumberX, y: commentsNumber!.frame.minY)
+    let sharesNumberX = shareButton!.frame.maxX + newsResponseNewsViewsSpaceBetweenElements
+    let sharesNumberOrigin = CGPoint(x: sharesNumberX, y: sharesNumber!.frame.minY)
     
     sharesNumber?.frame = CGRect(origin: sharesNumberOrigin, size: sharesNumberSize)
     
@@ -280,7 +299,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
     DispatchQueue.global().sync {
     let commentsWidth = commentButton!.frame.width + commentsNumber!.frame.width
     let shareWidth = shareButton!.frame.width + sharesNumber!.frame.width
-    width = newsLikesControl!.frame.width + newsResponseSpaceBetweenElements * 6 + commentsWidth + shareWidth
+    width = newsLikesControl!.frame.width + newsResponseNewsViewsSpaceBetweenElements * 6 + commentsWidth + shareWidth
     height = max(newsLikesControl!.frame.height, commentButton!.frame.height, commentsNumber!.frame.height, shareButton!.frame.height, sharesNumber!.frame.height)
     }
     let size = CGSize(width: width, height: height)
@@ -298,9 +317,31 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
         y = self.sourcePhoto.frame.maxY + ySpaceBetweenElements
       }
     }
-    let origin = CGPoint(x: xOffsetForSourcePhotoAndPostText, y: y)
+    let origin = CGPoint(x: xOffsetFromCellEdge, y: y)
     
     newsResponse?.frame = CGRect(origin: origin, size: size)
+  }
+  
+  private func setNewsViewsFrame() {
+    //set label size
+    guard let newsViewsNumberText = newsViewsNumber?.text else {return}
+    let newsViewsNumberSize = self.getLabelSize(text: newsViewsNumberText, font: newsViewsNumber!.font)
+
+    //set imageView size
+    let newsViewsImageViewSize = CGSize(width: 24, height: 22)
+    
+    //set the whole UIStackView size and origin
+    var width: CGFloat = 0
+    var height: CGFloat = 0
+    DispatchQueue.global().sync {
+      width = newsViewsImageViewSize.width + newsResponseNewsViewsSpaceBetweenElements + newsViewsNumberSize.width
+      height = max(newsViewsImageViewSize.height, newsViewsNumberSize.height)
+    }
+    let size = CGSize(width: width, height: height)
+    let x = screenWidth - xOffsetFromCellEdge - width
+    let origin = CGPoint(x: x, y: newsResponse!.frame.minY)
+    
+    newsViewsControl?.frame = CGRect(origin: origin, size: size)
   }
   
   override func prepareForReuse() {
@@ -335,8 +376,8 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
     sharesNumber?.removeFromSuperview()
     sharesNumber?.text = nil
     sharesNumber = nil
-    newsViewsImage?.removeFromSuperview()
-    newsViewsImage = nil
+    newsViewsImageView?.removeFromSuperview()
+    newsViewsImageView = nil
     newsViewsNumber?.removeFromSuperview()
     newsViewsNumber?.text = nil
     newsViewsNumber = nil
