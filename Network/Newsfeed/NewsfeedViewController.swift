@@ -71,6 +71,9 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
         return self.postNews?.count ?? 0
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+      return cellHeights[indexPath] ?? UITableView.automaticDimension
+    }
   
 //    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        guard let news = postNews, let urls = self.imageUrls else {return UITableViewCell()}
@@ -100,7 +103,6 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
       if cellHeights[indexPath] == nil {
         cellHeights[indexPath] = cell.cellHeight
       }
-      self.tableView.rowHeight = cellHeights[indexPath] ?? UITableView.automaticDimension
       return cell
     }
   
@@ -162,7 +164,6 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
             self.tableView.beginUpdates()
             self.tableView.insertRows(at: self.newIndexes, with: .none)
             self.tableView.endUpdates()
-//            self.tableView.scrollToRow(at: IndexPath(row: postNews.count - 1, section: 0), at: .bottom, animated: false)
             self.newsIsLoading = false
             self.newIndexes.removeAll()
           }
@@ -266,16 +267,5 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
       prefetcher.start()
     }
   }
-  
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 

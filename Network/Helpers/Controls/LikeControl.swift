@@ -17,7 +17,7 @@ import UIKit
   public var likeButton = LikeButton()
   private let likeCount = UILabel()
   
-  private let offset: CGFloat = 10
+  private let offset: CGFloat = 5
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -44,11 +44,12 @@ import UIKit
     likeCount.font = UIFont.systemFont(ofSize: 15)
     stackView = UIStackView(arrangedSubviews: [likeButton, likeCount])
     stackView.spacing = offset
-    stackView.distribution = .fillProportionally
+    stackView.distribution = .fill
     self.addSubview(stackView)
     stackView.axis = .horizontal
     stackView.alignment = .center
-
+    likeButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    likeCount.setContentCompressionResistancePriority(.required, for: .horizontal)
     self.layoutIfNeeded()
   }
   
@@ -64,7 +65,7 @@ import UIKit
     }
     likeButton.setNeedsDisplay()
     likeCount.text = String(numberOfLikes)
-
+    self.setNeedsLayout()
     self.layoutIfNeeded()
   }
   
