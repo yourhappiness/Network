@@ -42,7 +42,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   private var photoUrls: [URL]?
   private let sourcePhotoWidth: CGFloat = 50
   private let xOffsetFromCellEdge: CGFloat = 12
-  private let yOffsetForSourcePhoto: CGFloat = 4
+  private let yOffsetForSourcePhoto: CGFloat = 6
   private let sourceNameLeftOffset: CGFloat = 18
   private let sourceNameRightOffset: CGFloat = 12
   private let sourceNameTopOffset: CGFloat = 14
@@ -125,7 +125,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
       commentButton?.setImage(commentImage, for: .normal)
       commentsNumber = UILabel(frame: .zero)
       commentsNumber?.font = UIFont.systemFont(ofSize: 15)
-      commentsNumber?.textColor = .yellow
+      commentsNumber?.textColor = .blue
       commentsNumber?.numberOfLines = 0
       commentsNumber?.text = String(element.commentsNumber)
       let shareImage = UIImage(named: "Share")
@@ -133,7 +133,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
       shareButton?.setImage(shareImage, for: .normal)
       sharesNumber = UILabel(frame: .zero)
       sharesNumber?.font = UIFont.systemFont(ofSize: 15)
-      sharesNumber?.textColor = .yellow
+      sharesNumber?.textColor = .blue
       sharesNumber?.numberOfLines = 0
       sharesNumber?.text = String(element.sharesNumber)
       newsResponse?.addSubview(newsLikesControl!)
@@ -159,7 +159,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
       newsViewsImageView?.setContentHuggingPriority(.defaultHigh, for: .horizontal)
       newsViewsNumber = UILabel(frame: .zero)
       newsViewsNumber?.font = UIFont.systemFont(ofSize: 15)
-      newsViewsNumber?.textColor = .yellow
+      newsViewsNumber?.textColor = .blue
       newsViewsNumber?.numberOfLines = 0
       newsViewsNumber?.text = String(element.numberOfViews)
       newsViewsNumber?.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -200,14 +200,17 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
       setNewsResponseFrame()
       self.commentsNumber?.backgroundColor = self.backgroundColor
       self.sharesNumber?.backgroundColor = self.backgroundColor
-      DispatchQueue.global().sync {
-        self.cellHeight = self.cellHeight + ySpaceBetweenElements + self.newsResponse!.frame.height
-      }
+//      DispatchQueue.global().sync {
+//        self.cellHeight = self.cellHeight + ySpaceBetweenElements + self.newsResponse!.frame.height
+//      }
     }
     //layout viewsControl
     if self.newsViewsControl != nil {
       setNewsViewsFrame()
       self.newsViewsNumber?.backgroundColor = self.backgroundColor
+      DispatchQueue.global().sync {
+        self.cellHeight = self.cellHeight + ySpaceBetweenElements + self.newsViewsControl!.frame.height
+      }
     }
     //set contentSize
     let contentViewSize = CGSize(width: self.contentView.frame.width, height: cellHeight)

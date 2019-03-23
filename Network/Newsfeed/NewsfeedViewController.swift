@@ -17,6 +17,8 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
   
     private let vkService = VKService()
     private var postNews: [NewsfeedCompatible]?
+    //for newsfeed update
+    private var nextFrom: String?
     private var imageUrls: [[URL]?]? = []
     private var newIndexes: [IndexPath] = []
     private var newsIsLoading = false
@@ -30,15 +32,16 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.register(NewsfeedCellCalculatedLayout.self, forCellReuseIdentifier: NewsfeedCellCalculatedLayout.reuseId)
-//        self.tableView.prefetchDataSource = self
+        self.tableView.prefetchDataSource = self
       //запрос новостей
-      vkService.getNews() { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?) in
+      vkService.getNews() { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?, nextFrom: String?) in
         if let error = error {
           self?.showAlert(error: error)
           return
         }
-        guard let news = news, let users = users, let groups = groups, let self = self else {return}
+        guard let news = news, let users = users, let groups = groups, let nextFrom = nextFrom, let self = self else {return}
         self.postNews = news
+        self.nextFrom = nextFrom
         let imageUrlStrings: [[String]?]? = self.postNews?.map{$0.photos?.map{$0.photoURL}}
         self.imageUrls = self.getUrlsFromStrings(strings: imageUrlStrings)
         self.startDownload(for: self.imageUrls)
@@ -102,7 +105,11 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     }
   
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-      //TODO
+      let rows = Set(indexPaths.map { $0.row })
+      guard let postNews = self.postNews else {return}
+      if rows.contains(postNews.count - 1) {
+        loadMore()
+      }
     }
   
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -123,12 +130,12 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     func loadMore() {
       guard !newsIsLoading else {return}
         newsIsLoading = true
-        vkService.getNews() { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?) in
+      vkService.getNews(nextFrom: self.nextFrom) { [weak self] (news: [NewsfeedCompatible]?, users: [User]?, groups: [Group]?, error: Error?, nextFrom: String?) in
           if let error = error {
             self?.showAlert(error: error)
             return
           }
-          guard let news = news, let users = users, let groups = groups, let self = self, let postNews = self.postNews, let imageUrls = self.imageUrls else {return}
+          guard let news = news, let users = users, let groups = groups, let nextFrom = nextFrom, let self = self, let postNews = self.postNews, let imageUrls = self.imageUrls else {return}
           var i: Int = 0
           DispatchQueue.global().sync {
             news.forEach {_ in
@@ -137,6 +144,7 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
             }
           }
           self.postNews = postNews + news
+          self.nextFrom = nextFrom
           let newImageUrlStrings = news.map{$0.photos?.map{$0.photoURL}}
           let newImageUrls = self.getUrlsFromStrings(strings: newImageUrlStrings)
           self.startDownload(for: newImageUrls)
@@ -151,8 +159,10 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
             } catch {
               self.showAlert(error: error)
             }
-            self.tableView.insertRows(at: self.newIndexes, with: .automatic)
-            self.tableView.scrollToRow(at: IndexPath(row: postNews.count - 1, section: 0), at: .bottom, animated: false)
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: self.newIndexes, with: .none)
+            self.tableView.endUpdates()
+//            self.tableView.scrollToRow(at: IndexPath(row: postNews.count - 1, section: 0), at: .bottom, animated: false)
             self.newsIsLoading = false
             self.newIndexes.removeAll()
           }
@@ -164,13 +174,29 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
       let timeInterval = Date().timeIntervalSince(date)
       let strDate: String
       if timeInterval >= 2592000 {
-        strDate = "\(Int(round(timeInterval/2592000))) months ago"
+        if Int(round(timeInterval/2592000)) == 1 {
+          strDate = "\(Int(round(timeInterval/2592000))) month ago"
+        } else {
+          strDate = "\(Int(round(timeInterval/2592000))) months ago"
+        }
       } else if timeInterval >= 86400 {
-        strDate = "\(Int(round(timeInterval/86400))) days ago"
+        if Int(round(timeInterval/86400)) == 1 {
+          strDate = "\(Int(round(timeInterval/86400))) day ago"
+        } else {
+          strDate = "\(Int(round(timeInterval/86400))) days ago"
+        }
       } else if timeInterval >= 3600 {
-        strDate = "\(Int(round(timeInterval/3600))) hours ago"
+        if Int(round(timeInterval/3600)) == 1 {
+          strDate = "\(Int(round(timeInterval/3600))) hour ago"
+        } else {
+          strDate = "\(Int(round(timeInterval/3600))) hours ago"
+        }
       } else if timeInterval >= 60 {
-        strDate = "\(Int(round(timeInterval/60))) minutes ago"
+        if Int(round(timeInterval/60)) == 1 {
+          strDate = "\(Int(round(timeInterval/60))) minute ago"
+        } else {
+          strDate = "\(Int(round(timeInterval/60))) minutes ago"
+        }
       } else {
         strDate = "\(Int(round(timeInterval))) seconds ago"
       }
