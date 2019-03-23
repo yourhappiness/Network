@@ -78,7 +78,7 @@ class NewsfeedPostCell: UITableViewCell {
     self.commentsNumber.text = String(pieceOfNews.commentsNumber)
     self.sharesNumber.text = String(pieceOfNews.sharesNumber)
     self.newsLikes.isLiked = pieceOfNews.isLiked
-    self.newsLikes.setupView()
+    self.newsLikes.updateView()
     self.newsViews.text = String(pieceOfNews.numberOfViews)
     self.layoutSubviews()
   }

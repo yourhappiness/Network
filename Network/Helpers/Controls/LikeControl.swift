@@ -14,9 +14,10 @@ import UIKit
   public var isLiked = Bool()
   
   private var stackView: UIStackView!
-  private var likeView = [UIView]()
   public var likeButton = LikeButton()
   private let likeCount = UILabel()
+  
+  private let offset: CGFloat = 10
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -28,7 +29,7 @@ import UIKit
     setupView()
   }
   
-  func setupView() {
+  private func setupView() {
     if isLiked {
       likeButton.filled = true
       self.likeButton.strokeColor = UIColor.red
@@ -38,21 +39,20 @@ import UIKit
       self.likeButton.strokeColor = UIColor.black
       self.likeCount.textColor = UIColor.black
     }
-    likeButton.draw(CGRect(origin: .zero, size: CGSize(width: 38, height: 25)))
-    likeButton.frame = CGRect(origin: .zero, size: CGSize(width: 38, height: 25))
-    likeView.append(likeButton)
     likeCount.text = String(numberOfLikes)
     likeCount.textAlignment = .left
     likeCount.font = UIFont.systemFont(ofSize: 15)
-    likeView.append(likeCount)
-    stackView = UIStackView(arrangedSubviews: likeView)
+    stackView = UIStackView(arrangedSubviews: [likeButton, likeCount])
+    stackView.spacing = offset
+    stackView.distribution = .fillProportionally
     self.addSubview(stackView)
     stackView.axis = .horizontal
     stackView.alignment = .center
-    self.layoutSubviews()
+
+    self.layoutIfNeeded()
   }
   
-  func updateView() {
+  public func updateView() {
     if isLiked {
       likeButton.filled = true
       self.likeButton.strokeColor = UIColor.red
@@ -64,7 +64,8 @@ import UIKit
     }
     likeButton.setNeedsDisplay()
     likeCount.text = String(numberOfLikes)
-    self.layoutSubviews()
+
+    self.layoutIfNeeded()
   }
   
   @objc public func updateLikes() {
@@ -79,7 +80,8 @@ import UIKit
       })
       self.likeCount.textColor = UIColor.black
       isLiked = false
-      self.layoutSubviews()
+      
+      self.layoutIfNeeded()
       return
     }
 //    self.numberOfLikes += 1
@@ -90,43 +92,23 @@ import UIKit
       self.likeCount.text = String(self.numberOfLikes)
     })
     self.likeCount.textColor = UIColor.red
-    self.layoutSubviews()
+
+    self.layoutIfNeeded()
     isLiked = true
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    setLikeCountFrame()
     setStackViewFrame()
     setOwnFrame()
   }
   
-  private func getLabelSize(text: String, font: UIFont) -> CGSize {
-    let maxWidth: CGFloat = 100
-    let textblock = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
-    
-    let rect = text.boundingRect(with: textblock,
-                                 options: .usesLineFragmentOrigin,
-                                 attributes: [NSAttributedString.Key.font : font],
-                                 context: nil)
-    
-    let width = rect.size.width.rounded(.up)
-    let height = rect.size.height.rounded(.up)
-    
-    return CGSize(width: width, height: height)
-  }
-  
-  private func setLikeCountFrame() {
-    guard let likeCountText = likeCount.text else {return}
-    let likeCountSize = getLabelSize(text: likeCountText, font: likeCount.font)
-    let likeCountX = self.likeButton.frame.maxX + 10
-    let likeCountOrigin = CGPoint(x: likeCountX, y: likeCount.frame.minY)
-    likeCount.frame = CGRect(origin: likeCountOrigin, size: likeCountSize)
-  }
-  
   private func setStackViewFrame() {
-    let stackViewWidth = self.likeButton.frame.width + self.likeCount.frame.width + 10
-    let stackViewHeight = max(self.likeButton.frame.height, self.likeCount.frame.height)
+    let labelWidth = likeCount.intrinsicContentSize.width
+    let labelHeight = likeCount.intrinsicContentSize.height
+    
+    let stackViewWidth = LikeButton.desiredWidth + labelWidth + offset
+    let stackViewHeight = max(LikeButton.desiredWidth, labelHeight)
     let stackViewSize = CGSize(width: stackViewWidth, height: stackViewHeight)
     stackView.frame = CGRect(origin: .zero, size: stackViewSize)
   }
@@ -140,6 +122,12 @@ import UIKit
 }
 
 class LikeButton: UIButton {
+  static let desiredWidth: CGFloat = 33
+  static let desiredHeight: CGFloat = 25
+  override var intrinsicContentSize: CGSize {
+    return CGSize(width: LikeButton.desiredWidth, height: LikeButton.desiredHeight)
+  }
+  
   var strokeWidth: CGFloat = 2.0
   var strokeColor = UIColor.black
   var filled = false

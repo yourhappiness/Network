@@ -26,16 +26,7 @@ class DetailedPhotoViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.imageView.backgroundColor = .clear
-      //TO BE REWRITTEN
-//      if self.view.frame.height > self.view.frame.width {
-//        imageView.trailingAnchor.constraint(equalTo: (imageView.superview?.trailingAnchor)!)
-//        imageView.leadingAnchor.constraint(equalTo: (imageView.superview?.leadingAnchor)!)
-//        view.layoutSubviews()
-//      } else {
-//        imageView.topAnchor.constraint(equalTo: (imageView.superview?.topAnchor)!)
-//        imageView.bottomAnchor.constraint(equalTo: (imageView.superview?.bottomAnchor)!)
-//        view.layoutSubviews()
-//      }
+
         guard let photoToShow = photoToShowFirst else {return}
         imageView.containerView.kf.setImage(with: URL(string: photoToShow.photoURL))
         imageView.containerView.backgroundColor = .black
@@ -47,7 +38,7 @@ class DetailedPhotoViewController: UIViewController {
       
         likeControl.numberOfLikes = photoToShow.numberOfLikes
         likeControl.isLiked = photoToShow.isLiked
-        likeControl.setupView()
+        likeControl.updateView()
         likeControl.likeButton.addTarget(self, action: #selector(likeButtonPressed(_:)), for: .touchUpInside)
       
         leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(onSwipe(_:)))
@@ -69,15 +60,17 @@ class DetailedPhotoViewController: UIViewController {
         }
         guard let numberOfLikes = response, let self = self else {return}
         self.likeControl.numberOfLikes = numberOfLikes
-        self.likeControl.updateLikes()
-        do {
-          let realm = try Realm()
-          try realm.write {
-            currentPhoto.isLiked = false
-            currentPhoto.numberOfLikes = numberOfLikes
+        DispatchQueue.main.async {
+          self.likeControl.updateLikes()
+          do {
+            let realm = try Realm()
+            try realm.write {
+              currentPhoto.isLiked = false
+              currentPhoto.numberOfLikes = numberOfLikes
+            }
+          } catch {
+            self.showAlert(error: error)
           }
-        } catch {
-          self.showAlert(error: error)
         }
       }
     } else if !currentPhoto.isLiked {
@@ -88,15 +81,17 @@ class DetailedPhotoViewController: UIViewController {
         }
         guard let numberOfLikes = response, let self = self else {return}
         self.likeControl.numberOfLikes = numberOfLikes
-        self.likeControl.updateLikes()
-        do {
-          let realm = try Realm()
-          try realm.write {
-            currentPhoto.isLiked = true
-            currentPhoto.numberOfLikes = numberOfLikes
+        DispatchQueue.main.async {
+          self.likeControl.updateLikes()
+          do {
+            let realm = try Realm()
+            try realm.write {
+              currentPhoto.isLiked = true
+              currentPhoto.numberOfLikes = numberOfLikes
+            }
+          } catch {
+            self.showAlert(error: error)
           }
-        } catch {
-          self.showAlert(error: error)
         }
       }
     }
@@ -165,16 +160,4 @@ class DetailedPhotoViewController: UIViewController {
     default: return
     }
   }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

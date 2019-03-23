@@ -270,7 +270,7 @@ class NewsfeedCellCalculatedLayout: UITableViewCell, UICollectionViewDelegate, U
   }
 
   private func setNewsResponseFrame() {
-    self.newsLikesControl?.setupView()
+    self.newsLikesControl?.updateView()
     let newsLikesControlSize = CGSize(width: newsLikesControl!.frame.width, height: 22)
     let newsLikesControlOrigin = CGPoint(x: xOffsetFromCellEdge + newsResponseNewsViewsSpaceBetweenElements, y: newsLikesControl!.frame.minY)
     self.newsLikesControl?.frame = CGRect(origin: newsLikesControlOrigin, size: newsLikesControlSize)
