@@ -109,7 +109,7 @@ import UIKit
     let labelHeight = likeCount.intrinsicContentSize.height
     
     let stackViewWidth = LikeButton.desiredWidth + labelWidth + offset
-    let stackViewHeight = max(LikeButton.desiredWidth, labelHeight)
+    let stackViewHeight = max(LikeButton.desiredHeight, labelHeight)
     let stackViewSize = CGSize(width: stackViewWidth, height: stackViewHeight)
     stackView.frame = CGRect(origin: .zero, size: stackViewSize)
   }

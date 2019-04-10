@@ -19,7 +19,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
   private let vkService = VKService()
 //  private var photoService: PhotoService?
   
-  private var userFriends: Results<User>? = try? Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true)).objects(User.self).filter("deactivated = %@", false)
+  private var userFriends: Results<User>? = try? Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true)).objects(User.self).filter("deactivated = %@ AND isFriend = %@", false, true)
   private var notificationToken: NotificationToken?
   
   private var filteredFriends: Results<User>?
@@ -83,6 +83,9 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
         return
       }
       guard let users = users, let self = self else {return}
+      for user in users {
+        user.isFriend = true
+      }
       DispatchQueue.main.async {
         do {
           let realm = try Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))

@@ -59,11 +59,12 @@ class AllGroupsViewController: UITableViewController, UISearchBarDelegate {
           guard let result = result, let self = self else {return}
           DispatchQueue.main.async {
             if result {
+              self.selectedGroup.isUserGroup = true
               let alert = UIAlertController(title: "Оповещение", message: "Вы вступили в группу", preferredStyle: .alert)
               let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
               alert.addAction(action)
               do {
-                try DatabaseService.saveVKData([self.filteredGroups[indexPath.row]])
+                try DatabaseService.saveVKData([self.selectedGroup])
               } catch {
                 self.showAlert(error: error)
               }

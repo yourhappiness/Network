@@ -625,7 +625,7 @@ Aw
                                             <rect key="frame" x="12" y="359.5" width="225" height="40"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kio-Dg-8HB" customClass="LikeControl" customModule="Network" customModuleProvider="target">
-                                                    <rect key="frame" x="5" y="9" width="68.5" height="25"/>
+                                                    <rect key="frame" x="5" y="9" width="85" height="22"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="85" id="10d-R5-U8B"/>

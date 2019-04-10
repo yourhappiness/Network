@@ -21,7 +21,7 @@ final class NewsfeedPost: NewsfeedCompatible {
 
   var sourceId: Int
   var postDate: Double
-  var postText: String
+  var postText: String?
   var photos: [Photo]?
   var commentsNumber: Int
   var numberOfLikes: Int
@@ -32,17 +32,25 @@ final class NewsfeedPost: NewsfeedCompatible {
   init (json: JSON) {
     self.sourceId = json["source_id"].intValue
     self.postDate = json["date"].doubleValue
-    self.postText = json["text"].stringValue
-    if let photoAttach = json["attachments"].arrayValue.first(where: {$0["type"].stringValue == "photo"}) {
-      let photo = Photo.parseJSON(json: photoAttach["photo"])
-      self.photos = []
-      self.photos?.append(photo)
+    if json["text"].stringValue != "" {
+      self.postText = json["text"].stringValue
+    } else {
+      self.postText = nil
     }
     self.commentsNumber = json["comments"]["count"].intValue
     self.numberOfLikes = json["likes"]["count"].intValue
     self.isLiked = json["likes"]["user_likes"].boolValue
     self.sharesNumber = json["reposts"]["count"].intValue
     self.numberOfViews = json["views"]["count"].intValue
+    let attachs = json["attachments"].arrayValue.map {$0["type"].stringValue}
+    if attachs.contains("photo") {
+      self.photos = []
+      for (index, attach) in attachs.enumerated() {
+        if attach == "photo" {
+          self.photos?.append(Photo.init(json: json["attachments"].array![index]["photo"]))
+        }
+      }
+    }
   }
   
 }
