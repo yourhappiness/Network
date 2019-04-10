@@ -13,7 +13,7 @@ class GroupsViewController: UITableViewController {
   
   private let vkService = VKService()
   private var photoService: PhotoService?
-  private var userGroups: Results<Group>? = DatabaseService.loadVKData(type: Group.self)
+  private var userGroups: Results<Group>? = try? Realm().objects(Group.self).filter("isUserGroup = %@", true)
   private var notificationToken: NotificationToken?
 
     override func viewDidLoad() {
@@ -43,6 +43,9 @@ class GroupsViewController: UITableViewController {
           self?.showAlert(error: error)
         }
         guard let userGroups = userGroups, let self = self else {return}
+        for group in userGroups {
+          group.isUserGroup = true
+        }
         DispatchQueue.main.async {
           do {
             let realm = try Realm()
@@ -57,10 +60,6 @@ class GroupsViewController: UITableViewController {
 
     }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(true)
-    self.notificationToken?.invalidate()
-  }
 
     // MARK: - Table view data source
 
@@ -95,29 +94,31 @@ class GroupsViewController: UITableViewController {
             // Delete the row from the data source
           guard let userGroups = userGroups else {return}
           vkService.joinOrLeaveGroup(id: userGroups[indexPath.row].id, toJoin: false) {[weak self] result, error in
-            if let error = error {
-              self?.showAlert(error: error)
-            }
-            guard let result = result, let self = self else {return}
-            if result {
-              let alert = UIAlertController(title: "Оповещение", message: "Вы покинули группу", preferredStyle: .alert)
-              let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
-              alert.addAction(action)
-              self.parent?.present(alert, animated: true, completion: nil)
-              do {
-                try DatabaseService.deleteVKData([userGroups[indexPath.row]])
-              } catch {
-                self.showAlert(error: error)
+            DispatchQueue.main.async {
+              if let error = error {
+                self?.showAlert(error: error)
               }
-            } else {
-              //создаем контроллер
-              let alert = UIAlertController(title: "Ошибка", message: "Не получается покинуть эту группу", preferredStyle: .alert)
-              //Создаем кнопку
-              let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
-              //Добавляем кнопку на контроллер
-              alert.addAction(action)
-              //Показываем контроллер
-              self.parent?.present(alert, animated: true, completion: nil)
+              guard let result = result, let self = self else {return}
+              if result {
+                  let alert = UIAlertController(title: "Оповещение", message: "Вы покинули группу", preferredStyle: .alert)
+                  let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
+                  alert.addAction(action)
+                  self.parent?.present(alert, animated: true, completion: nil)
+                  do {
+                    try DatabaseService.deleteVKData([userGroups[indexPath.row]])
+                  } catch {
+                    self.showAlert(error: error)
+                  }
+              } else {
+                //создаем контроллер
+                let alert = UIAlertController(title: "Ошибка", message: "Не получается покинуть эту группу", preferredStyle: .alert)
+                //Создаем кнопку
+                let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
+                //Добавляем кнопку на контроллер
+                alert.addAction(action)
+                //Показываем контроллер
+                self.parent?.present(alert, animated: true, completion: nil)
+              }
             }
           }
         } else if editingStyle == .insert {

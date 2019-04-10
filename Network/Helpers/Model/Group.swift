@@ -20,6 +20,7 @@ final class Group: Object, HasParameters {
   @objc dynamic var id: Int = 0
   @objc dynamic var name: String = ""
   @objc dynamic var photoURL: String = ""
+  @objc dynamic var isUserGroup: Bool = false
   
   static var path: String = "/groups.get"
   static var parameters: Parameters = [

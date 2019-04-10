@@ -144,13 +144,13 @@ class VKService {
   }
   
   //Получение новостей
-  func getNews (completionHandler: @escaping ([NewsfeedCompatible]?, [User]?, [Group]?, Error?) -> Void) {
+  func getNews (nextFrom: String? = nil, completionHandler: @escaping ([NewsfeedCompatible]?, Error?, String?) -> Void) {
     //путь для метода
     let path = "/newsfeed.get"
     //параметры
     var parameters: Parameters
     
-    if Session.instance.nextFrom == nil {
+    if nextFrom == nil {
       parameters = [
         "filters": "post,photo",
         "max_photos": "10",
@@ -162,7 +162,7 @@ class VKService {
       parameters = [
         "filters": "post,photo",
         "max_photos": "10",
-        "start_from": Session.instance.nextFrom!,
+        "start_from": nextFrom!,
         "count": "20",
         "access_token": Session.instance.token,
         "v": "5.92"
@@ -175,7 +175,7 @@ class VKService {
     Alamofire.request(url, method: .get, parameters: parameters).responseJSON(queue: DispatchQueue.global(qos: .userInteractive)) {response in
       switch response.result {
       case .failure(let error):
-        completionHandler(nil, nil, nil, error)
+        completionHandler(nil, error, nil)
       case .success(let value):
         let json = JSON(value)
         let items: [NewsfeedCompatible] = json["response"]["items"].arrayValue.map {
@@ -189,8 +189,19 @@ class VKService {
         }
         let users = json["response"]["profiles"].arrayValue.map { User.parseJSON(json: $0)}
         let groups = json["response"]["groups"].arrayValue.map { Group.parseJSON(json: $0)}
-        Session.instance.nextFrom = json["response"]["next_from"].stringValue
-        completionHandler(items, users, groups, nil)
+        DispatchQueue.main.async {
+          do {
+            let realm = try Realm()
+            try realm.write {
+              realm.add(users, update: true)
+              realm.add(groups, update: true)
+            }
+          } catch {
+            completionHandler(nil, error, nil)
+          }
+        }
+        let startFrom = json["response"]["next_from"].stringValue
+        completionHandler(items, nil, startFrom)
       }
     }
   }

@@ -22,6 +22,7 @@ final class User: Object, HasParameters {
   @objc dynamic var lastName: String = ""
   @objc dynamic var photoURL: String = ""
   @objc dynamic var deactivated: Bool = false
+  @objc dynamic var isFriend: Bool = false
   var photos = List<Photo>()
 
   static var path: String = "/friends.get"

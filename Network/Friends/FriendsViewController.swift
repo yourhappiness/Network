@@ -17,8 +17,9 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
 
   var activityIndicator: ActivityIndicatorView?
   private let vkService = VKService()
+//  private var photoService: PhotoService?
   
-  private var userFriends: Results<User>? = try? Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true)).objects(User.self).filter("deactivated = %@", false)
+  private var userFriends: Results<User>? = try? Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true)).objects(User.self).filter("deactivated = %@ AND isFriend = %@", false, true)
   private var notificationToken: NotificationToken?
   
   private var filteredFriends: Results<User>?
@@ -26,6 +27,7 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
   
     override func viewDidLoad() {
       super.viewDidLoad()
+//      photoService = PhotoService(container: tableView)
       setActivityIndicator()
       setTableView()
       view.bringSubviewToFront(firstLettersControl)
@@ -81,6 +83,9 @@ class FriendsViewController: UIViewController, UITableViewDelegate {
         return
       }
       guard let users = users, let self = self else {return}
+      for user in users {
+        user.isFriend = true
+      }
       DispatchQueue.main.async {
         do {
           let realm = try Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))
@@ -228,9 +233,11 @@ extension FriendsViewController: UITableViewDataSource {
   
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//    let cell = tableView.dequeueReusableCell(withIdentifier: FriendsCellCalculatedLayout.reuseId, for: indexPath) as! FriendsCellCalculatedLayout
     let cell = tableView.dequeueReusableCell(withIdentifier: "FriendsCell", for: indexPath) as! FriendsCell
     var friendProp: User
     friendProp = groupedFriends[indexPath.section][indexPath.row]
+//    cell.configure(with: friendProp, by: indexPath, service: photoService)
     cell.configure(with: friendProp)
     cell.backgroundColor = tableView.backgroundColor
     return cell

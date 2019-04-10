@@ -13,8 +13,13 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
   
   override func awakeFromNib() {
     super.awakeFromNib()
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     postPhoto = UIImageView(frame: self.bounds)
     self.addSubview(postPhoto!)
+    postPhoto?.translatesAutoresizingMaskIntoConstraints = false
     postPhoto?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
     postPhoto?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     postPhoto?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
@@ -22,9 +27,22 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
     postPhoto?.contentMode = .scaleAspectFit
   }
   
-  func configure(with url: URL) {
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    postPhoto = UIImageView(frame: self.bounds)
+    self.addSubview(postPhoto!)
+    postPhoto?.translatesAutoresizingMaskIntoConstraints = false
+    postPhoto?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    postPhoto?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    postPhoto?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+    postPhoto?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+    postPhoto?.contentMode = .scaleAspectFit
+  }
+  
+  func configure(with url: URL, photoWidth: CGFloat, photoHeight: CGFloat, for height: CGFloat) {
     awakeFromNib()
-    postPhoto?.kf.setImage(with: url)
+    guard let postPhoto = self.postPhoto else {return}
+    postPhoto.kf.setImage(with: url)
   }
   
   override func prepareForReuse() {

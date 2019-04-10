@@ -44,7 +44,7 @@ class PhotoView: UIView {
   }
   
   override var intrinsicContentSize: CGSize {
-    return containerView.image?.size ?? CGSize(width: 0, height: 0)
+    return containerView.image?.size ?? CGSize(width: 50, height: 50)
   }
   
   override func layoutSubviews() {
