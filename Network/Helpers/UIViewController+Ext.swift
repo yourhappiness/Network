@@ -1,9 +1,9 @@
 //
 //  UIViewController+Ext.swift
-//  Geekbrains Weather
+//  Network
 //
-//  Created by user on 16/01/2019.
-//  Copyright © 2019 Andrey Antropov. All rights reserved.
+//  Created by Anastasia Romanova on 16/12/2018.
+//  Copyright © 2018 Anastasia Romanova. All rights reserved.
 //
 
 import UIKit

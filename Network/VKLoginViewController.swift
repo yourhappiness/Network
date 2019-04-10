@@ -37,18 +37,7 @@ class VKLoginViewController: UIViewController {
       let request = URLRequest(url: urlComponents.url!)
       vkWebView.load(request)
   }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+  
 }
 
 extension VKLoginViewController: WKNavigationDelegate {
@@ -69,7 +58,7 @@ extension VKLoginViewController: WKNavigationDelegate {
     }
     guard let token = params["access_token"], let userId = params["user_id"] else {return}
     Session.instance.token = token
-    print(token)
+//    print(token)
     Session.instance.userId = Int(userId)!
     decisionHandler(.cancel)
     performSegue(withIdentifier: "VKLogin", sender: self)

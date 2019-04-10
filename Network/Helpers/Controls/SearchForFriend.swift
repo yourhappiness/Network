@@ -58,7 +58,6 @@ var firstLetters = [Character]()
     stackView.alignment = .center
     stackView.distribution = .fillEqually
     //получить нижнюю границу экрана
-//    stackView.frame = CGRect(x: bounds.minX, y: bounds.minY + 70, width: bounds.width, height: bounds.height - 70)
     stackView.frame = CGRect(x: bounds.minX, y: bounds.minY + 70, width: bounds.width, height: firstLetters.count * 15 > Int(bounds.height - 70) ? bounds.height - 70 : CGFloat(firstLetters.count * 15))
     self.addGestureRecognizer(panGestureRecognizer)
   }

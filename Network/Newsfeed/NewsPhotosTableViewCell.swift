@@ -28,7 +28,6 @@ class NewsPhotosTableViewCell: UITableViewCell, UICollectionViewDelegate, UIColl
   
   override func awakeFromNib() {
       super.awakeFromNib()
-    
       setupViews()
   }
   

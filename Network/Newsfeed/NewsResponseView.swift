@@ -33,7 +33,7 @@ class NewsResponseView: UIView {
   public var sharesLabelSize = CGSize()
   
   //MARK: - Privates
-  private var spaceBetweenElements:CGFloat = 5
+  private var spaceBetweenElements: CGFloat = 5
   
   override init(frame: CGRect) {
     super.init(frame: frame)
