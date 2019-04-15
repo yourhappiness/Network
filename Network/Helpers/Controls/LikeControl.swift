@@ -72,7 +72,7 @@ import UIKit
   @objc public func updateLikes() {
     guard !isLiked else {
       
-//      self.numberOfLikes -= 1
+//      decreasing numberOfLikes
       self.likeButton.filled = false
       self.likeButton.strokeColor = UIColor.black
       self.likeButton.setNeedsDisplay()
@@ -85,7 +85,7 @@ import UIKit
       self.layoutIfNeeded()
       return
     }
-//    self.numberOfLikes += 1
+//    increasing numberOfLikes
     self.likeButton.filled = true
     self.likeButton.strokeColor = UIColor.red
     self.likeButton.setNeedsDisplay()

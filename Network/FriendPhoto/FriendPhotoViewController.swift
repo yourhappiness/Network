@@ -46,13 +46,12 @@ class FriendPhotoViewController: UICollectionViewController {
     
       //получение фото
       vkService.get(userId: user.id) { [weak self] (userPhotos: [Photo]?, error: Error?) in
-        if let error = error {
-          self?.showAlert(error: error)
-          return
-        }
-        
-        guard let userPhotos = userPhotos, let self = self else {return}
         DispatchQueue.main.async {
+          if let error = error {
+            self?.showAlert(error: error)
+            return
+          }
+          guard let userPhotos = userPhotos, let self = self else {return}
           do {
             guard let realm = try? Realm() else {return}
             try realm.write {

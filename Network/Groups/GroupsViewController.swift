@@ -14,7 +14,7 @@ class GroupsViewController: UITableViewController {
   private let vkService = VKService()
   private var photoService: PhotoService?
   private var userGroups: Results<Group>? = try? Realm().objects(Group.self).filter("isUserGroup = %@", true)
-  private var notificationToken: NotificationToken?
+  public var notificationToken: NotificationToken?
 
     override func viewDidLoad() {
       super.viewDidLoad()
@@ -60,6 +60,11 @@ class GroupsViewController: UITableViewController {
 
     }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewDidDisappear(true)
+    self.notificationToken?.invalidate()
+  }
+  
 
     // MARK: - Table view data source
 
@@ -75,6 +80,7 @@ class GroupsViewController: UITableViewController {
       let cell = tableView.dequeueReusableCell(withIdentifier: "GroupsCell", for: indexPath) as! GroupsCell
       guard let userGroups = userGroups else {return UITableViewCell()}
       cell.configure(with: userGroups[indexPath.row], by: indexPath, service: photoService)
+      cell.backgroundColor = tableView.backgroundColor
       return cell
     }
   
@@ -88,7 +94,6 @@ class GroupsViewController: UITableViewController {
   }
   
   
-    // Override to support editing the table view.
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
@@ -122,7 +127,6 @@ class GroupsViewController: UITableViewController {
             }
           }
         } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
   

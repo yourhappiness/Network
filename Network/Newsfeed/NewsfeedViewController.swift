@@ -29,6 +29,7 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     private var newsIsLoading = false
     private var numberOfRows: [Int : Int] = [:]
     private var cellTypesForIndexPathes: [IndexPath : CellType] = [:]
+    //for calculations of cell heights
     private var sourceNameTexts: [IndexPath : String] = [:]
     private var postTimeTexts: [IndexPath : String] = [:]
     private var sourceNameSizes: [IndexPath : CGSize] = [:]
@@ -39,9 +40,6 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     //array for cells heights
     private var cellHeights: [IndexPath : CGFloat] = [:]
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(true)
-  }
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,12 +91,16 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
       return cellHeights[indexPath] ?? UITableView.automaticDimension
     }
   
-  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footerSize = CGSize(width: screenWidth, height: 2)
-    let footerView = UITableViewHeaderFooterView(frame: CGRect(origin: .zero, size: footerSize))
-    footerView.backgroundView?.backgroundColor = .white
-    return footerView
-  }
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+      return cellHeights[indexPath] ?? UITableView.automaticDimension
+    }
+  
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+      let footerSize = CGSize(width: screenWidth, height: 2)
+      let footerView = UITableViewHeaderFooterView(frame: CGRect(origin: .zero, size: footerSize))
+      footerView.backgroundView?.backgroundColor = .white
+      return footerView
+    }
   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
@@ -161,19 +163,22 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
       let sections = Set(indexPaths.map { $0.section })
       guard let postNews = self.postNews else {return}
-      if sections.contains(postNews.count - 1) {
+      if !newsIsLoading && sections.contains(postNews.count - 1) {
         loadMore()
+        print("prefetching more news....")
       }
     }
   
-  //дозагрузка новостей
+  //newsfeed update - "infinite scroll"
     func loadMore() {
       guard !newsIsLoading else {return}
         newsIsLoading = true
       vkService.getNews(nextFrom: self.nextFrom) { [weak self] (news: [NewsfeedCompatible]?, error: Error?, nextFrom: String?) in
-          if let error = error {
-            self?.showAlert(error: error)
-            return
+          DispatchQueue.main.async {
+            if let error = error {
+              self?.showAlert(error: error)
+              return
+            }
           }
           guard let news = news, let nextFrom = nextFrom, let self = self, let postNews = self.postNews, let imageUrls = self.imageUrls else {return}
           var i: Int = 0
@@ -309,7 +314,6 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
   }
   
   
-  
   private func getCellHeights(for newsArray: [NewsfeedCompatible], with startIndex: Int) {
     var section = startIndex
     repeat {
@@ -317,6 +321,7 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
       for row in 0..<rows {
         let indexPath = IndexPath(row: row, section: section)
         guard let cellType = cellTypesForIndexPathes[indexPath] else {return}
+        
         switch cellType {
           
         case .Header:

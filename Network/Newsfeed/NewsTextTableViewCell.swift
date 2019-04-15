@@ -79,6 +79,7 @@ class NewsTextTableViewCell: UITableViewCell {
   
   override func prepareForReuse() {
     postTextView.text = nil
+    postTextView.isScrollEnabled = false
   }
   
 }

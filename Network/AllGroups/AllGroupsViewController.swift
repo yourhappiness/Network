@@ -23,6 +23,7 @@ class AllGroupsViewController: UITableViewController, UISearchBarDelegate {
   override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
+        searchBar.barTintColor = tableView.backgroundColor
         tableView.rowHeight = 48
     }
 
@@ -39,6 +40,7 @@ class AllGroupsViewController: UITableViewController, UISearchBarDelegate {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllGroupsCell", for: indexPath) as! AllGroupsCell
+        cell.backgroundColor = tableView.backgroundColor
         let groupProp: Group
         if isFiltering() {
           groupProp = filteredGroups[indexPath.row]

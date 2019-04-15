@@ -16,7 +16,7 @@ class DatabaseService {
   @discardableResult
   static func saveVKData <Class: Object> (_ data: [Class], config: Realm.Configuration = Realm.Configuration.defaultConfiguration, update: Bool = true) throws -> Realm? {
     let realm = try Realm(configuration: config)
-    print(realm.configuration.fileURL as Any)
+//    print(realm.configuration.fileURL as Any)
     try realm.write {
       realm.add(data, update: update)
     }
@@ -25,7 +25,7 @@ class DatabaseService {
   
   static func loadVKData <Class: Object> (type: Class.Type, userId: Int? = nil, config: Realm.Configuration = Realm.Configuration.defaultConfiguration) -> Results<Class>? {
     let realm = try? Realm(configuration: config)
-    print(realm?.configuration.fileURL as Any)
+//    print(realm?.configuration.fileURL as Any)
     if userId != nil {
       return realm?.objects(type).filter("userId == %@", userId as Any)
     } else {

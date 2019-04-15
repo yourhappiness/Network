@@ -53,36 +53,37 @@ class PhotoView: UIView {
   }
   
   func setup() {
-    containerView.frame = self.bounds
     self.containerView.clipsToBounds = true
-    self.containerView.layer.cornerRadius = self.containerView.frame.width / 2
     self.containerView.contentMode = .scaleAspectFit
     self.addSubview(containerView)
-    setupShadow()
-    self.bringSubviewToFront(containerView)
-  }
-  
-  func setupShadow() {
-    shadowView.frame = self.bounds
-    self.shadowView.layer.shadowOffset = shadowOffset
-    self.shadowView.layer.shadowOpacity = shadowOpacity
-    self.shadowView.layer.shadowRadius = shadowRadius
-    self.shadowView.backgroundColor = .clear
-    self.shadowView.layer.shadowPath = UIBezierPath(ovalIn: self.shadowView.bounds).cgPath
-    self.addSubview(shadowView)
-  }
-  
-  func sizeChanged() {
     self.containerView.translatesAutoresizingMaskIntoConstraints = false
     self.containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
     self.containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     self.containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     self.containerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    setupShadow()
+    self.bringSubviewToFront(containerView)
+    self.layoutIfNeeded()
+  }
+  
+  func setupShadow() {
+    self.shadowView.layer.shadowOffset = shadowOffset
+    self.shadowView.layer.shadowOpacity = shadowOpacity
+    self.shadowView.layer.shadowRadius = shadowRadius
+    self.shadowView.backgroundColor = .clear
+    self.addSubview(shadowView)
     self.shadowView.translatesAutoresizingMaskIntoConstraints = false
     self.shadowView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
     self.shadowView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     self.shadowView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     self.shadowView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-    setup()
+  }
+  
+  func sizeChanged() {
+    containerView.frame = self.bounds
+    self.containerView.layer.cornerRadius = self.containerView.frame.width / 2
+    shadowView.frame = self.bounds
+    self.shadowView.layer.shadowPath = UIBezierPath(ovalIn: self.shadowView.bounds).cgPath
+    
   }
 }

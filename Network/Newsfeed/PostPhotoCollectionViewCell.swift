@@ -11,10 +11,6 @@ import UIKit
 class PostPhotoCollectionViewCell: UICollectionViewCell {
   var postPhoto: UIImageView?
   
-  override func awakeFromNib() {
-    super.awakeFromNib()
-  }
-  
   override init(frame: CGRect) {
     super.init(frame: frame)
     postPhoto = UIImageView(frame: self.bounds)
@@ -40,7 +36,6 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
   }
   
   func configure(with url: URL, photoWidth: CGFloat, photoHeight: CGFloat, for height: CGFloat) {
-    awakeFromNib()
     guard let postPhoto = self.postPhoto else {return}
     postPhoto.kf.setImage(with: url)
   }
