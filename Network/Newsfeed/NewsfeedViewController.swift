@@ -91,12 +91,16 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
       return cellHeights[indexPath] ?? UITableView.automaticDimension
     }
   
-  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footerSize = CGSize(width: screenWidth, height: 2)
-    let footerView = UITableViewHeaderFooterView(frame: CGRect(origin: .zero, size: footerSize))
-    footerView.backgroundView?.backgroundColor = .white
-    return footerView
-  }
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+      return cellHeights[indexPath] ?? UITableView.automaticDimension
+    }
+  
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+      let footerSize = CGSize(width: screenWidth, height: 2)
+      let footerView = UITableViewHeaderFooterView(frame: CGRect(origin: .zero, size: footerSize))
+      footerView.backgroundView?.backgroundColor = .white
+      return footerView
+    }
   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       
@@ -159,8 +163,9 @@ class NewsfeedViewController: UITableViewController, UITableViewDataSourcePrefet
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
       let sections = Set(indexPaths.map { $0.section })
       guard let postNews = self.postNews else {return}
-      if sections.contains(postNews.count - 1) {
+      if !newsIsLoading && sections.contains(postNews.count - 1) {
         loadMore()
+        print("prefetching more news....")
       }
     }
   
