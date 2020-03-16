@@ -9,7 +9,7 @@ target 'Network' do
   pod 'Alamofire', '~> 4.8.1'
   pod 'SwiftyJSON', '~> 4.2.0'
   pod 'Kingfisher', '~> 5.1.0'
-  pod 'RealmSwift', '~> 3.13.1'
+  pod 'RealmSwift', '~> 3.20.0'
 
   target 'NetworkTests' do
     inherit! :search_paths
