@@ -8,7 +8,7 @@ target 'Network' do
   # Pods for Network
   pod 'Alamofire', '~> 4.8.1'
   pod 'SwiftyJSON', '~> 4.2.0'
-  pod 'Kingfisher', '~> 5.1.0'
+  pod 'Kingfisher', '~> 5.2.0'
   pod 'RealmSwift', '~> 3.20.0'
 
   target 'NetworkTests' do
